@@ -32,6 +32,9 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 - **🌲 A reward forest** — every ritual or finished timer plants a tree in [`garden.html`](garden.html). Keep going and bunnies, squirrels, and the occasional fox move in. It only ever grows.
 - **💞 Two-person mode** — pair with someone you love and cheer each other on (see below).
 - **🌸 A gentle AI companion** — encouragement and a kind read on your patterns, powered by Claude (see below).
+- **🌬️ A living sakura breeze** — a soft, drifting fog ([Vanta.js](https://www.vantajs.com/) / WebGL) animates behind the whole dashboard, tinted to the theme, with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
+
+![The drifting sakura haze behind the UI](docs/screenshots/breeze.png)
 
 <table>
 <tr>
@@ -121,7 +124,7 @@ python3 -m http.server 8000    # then visit http://localhost:8000
 
 ## 🧰 Built with
 
-Vanilla JS · CSS custom properties · `Intl` for timezones · [PeerJS](https://peerjs.com/) (WebRTC) for pairing · [Claude API](https://docs.claude.com/) for the companion · Web Audio for the timer chime. No frameworks, no build step.
+Vanilla JS · CSS custom properties · `Intl` for timezones · [Vanta.js](https://www.vantajs.com/) + [three.js](https://threejs.org/) for the animated background · [PeerJS](https://peerjs.com/) (WebRTC) for pairing · [Claude API](https://docs.claude.com/) for the companion · Web Audio for the timer chime. No frameworks, no build step.
 
 ## 📝 Note
 

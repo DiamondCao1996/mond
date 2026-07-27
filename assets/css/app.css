@@ -70,6 +70,7 @@
   }
 
   /* ============ Collaboration + companion + modals ============ */
+  #vanta-bg{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.68}
   .app{position:relative; z-index:2}
   .pair-chip{display:flex; align-items:center; gap:9px; width:100%; text-align:left; margin-top:10px; padding:10px 12px; border-radius:11px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font:inherit; font-weight:600; font-size:.83rem; cursor:pointer; transition:.15s}
   .pair-chip:hover{border-color:var(--pine); color:var(--ink)}
