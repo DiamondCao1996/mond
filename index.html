@@ -263,6 +263,7 @@
         <p class="greeting" id="greeting">A calm, colorful rhythm for a sharp mind — living between two time zones, one steady body.</p>
       </div>
       <div class="controls">
+        <a class="iconbtn" href="garden.html" title="Your forest — where rewards grow" aria-label="Open your reward forest">🌲</a>
         <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
       </div>
     </div>
@@ -439,6 +440,7 @@
 /* ================= State & storage ================= */
 var KEY="freshlife.v1";
 var state=load();
+if(state.theme)document.documentElement.setAttribute("data-theme",state.theme);
 function load(){
   try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object")return s;}catch(e){}
   return {region:"china",habits:{},streaks:{},lastReset:null,dietDay:null,jetDir:"toSweden"};
@@ -619,8 +621,8 @@ function updateHabitProgress(){
 function toggleHabit(id){
   var was=!!state.habits[id];
   state.habits[id]=!was;
-  if(!was)state.streaks[id]=(state.streaks[id]||0)+1;
-  else state.streaks[id]=Math.max(0,(state.streaks[id]||0)-1);
+  if(!was){state.streaks[id]=(state.streaks[id]||0)+1;state.rewardsEarned=(state.rewardsEarned||0)+1;}
+  else{state.streaks[id]=Math.max(0,(state.streaks[id]||0)-1);state.rewardsEarned=Math.max(0,(state.rewardsEarned||0)-1);}
   save();renderHabits();
 }
 document.getElementById("habits").addEventListener("click",function(e){
@@ -670,7 +672,7 @@ function selectPreset(id){
 }
 function tick(){
   if(timer.remaining>0){timer.remaining--;paintDial();}
-  else{stopTimer();chime();document.getElementById("tStart").textContent="Start";flashDone();}
+  else{stopTimer();chime();state.rewardsEarned=(state.rewardsEarned||0)+1;save();document.getElementById("tStart").textContent="Start";flashDone();}
 }
 function startTimer(){
   if(timer.running)return;
@@ -931,7 +933,8 @@ document.getElementById("jetSwitch").addEventListener("click",function(e){
 document.getElementById("themeBtn").addEventListener("click",function(){
   var cur=document.documentElement.getAttribute("data-theme");
   var isDark=cur? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-  document.documentElement.setAttribute("data-theme",isDark?"light":"dark");
+  state.theme=isDark?"light":"dark";save();
+  document.documentElement.setAttribute("data-theme",state.theme);
 });
 
 /* ================= Clear ================= */
