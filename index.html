@@ -250,25 +250,121 @@
   footer .heart{color:var(--dawn)}
   .reset-link{background:none; border:0; color:var(--ink-faint); text-decoration:underline; cursor:pointer; font-size:.8rem; font-family:var(--sans)}
   :focus-visible{outline:2.5px solid var(--pine); outline-offset:2px; border-radius:6px}
+
+  /* ============ App shell (sidebar + main, prodify-style layout) ============ */
+  html{scroll-behavior:smooth}
+  .card,.clock{border-radius:18px}
+  .app{display:grid; grid-template-columns:252px minmax(0,1fr); min-height:100vh}
+  @media (max-width:960px){
+    .app{grid-template-columns:minmax(0,1fr)} html,body{overflow-x:hidden; max-width:100%}
+    .main{max-width:100vw}
+    .hero>*, .grid-2>*, .timer-wrap>*, .market-grid>*, .tips-grid>*, .meals>*, .jet-days>*{min-width:0}
+  }
+  @media (max-width:560px){.clock .time{font-size:2.3rem}}
+
+  .sidebar{
+    position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+    background:var(--surface); border-right:1px solid var(--line);
+    display:flex; flex-direction:column; gap:6px; padding:20px 16px; z-index:40;
+  }
+  .side-brand{display:flex; align-items:center; gap:10px; font-family:var(--serif); font-weight:600; font-size:1.3rem; padding:4px 8px 18px; letter-spacing:-.01em}
+  .side-brand .logo{width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-size:1.1rem; background:color-mix(in srgb,var(--pine) 16%, transparent)}
+  .side-brand .dot{color:var(--dawn)}
+  .nav{display:flex; flex-direction:column; gap:3px; flex:1}
+  .nav-i{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:11px; color:var(--ink-soft); text-decoration:none; font-weight:600; font-size:.9rem; transition:.15s}
+  .nav-i .ic{width:20px; text-align:center; font-size:.98rem}
+  .nav-i:hover{background:var(--surface-2); color:var(--ink)}
+  .nav-i.active{background:color-mix(in srgb,var(--pine) 14%, transparent); color:var(--pine)}
+  .side-promo{margin-top:14px; padding:16px; border-radius:16px; color:#fff; background:linear-gradient(150deg,var(--pine),var(--pine-deep)); box-shadow:var(--shadow)}
+  .side-promo .sp-title{font-family:var(--serif); font-weight:600; font-size:1rem}
+  .side-promo .sp-text{font-size:.8rem; opacity:.92; margin-top:6px; line-height:1.45}
+  .side-promo .sp-btn{display:inline-block; margin-top:13px; background:rgba(255,255,255,.18); color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:600; font-size:.82rem; transition:.15s}
+  .side-promo .sp-btn:hover{background:rgba(255,255,255,.3)}
+
+  .main{padding:clamp(16px,2.4vw,26px) clamp(16px,3vw,36px) 80px; max-width:1240px; min-width:0}
+  .topbar{display:flex; align-items:center; gap:10px; margin-bottom:20px}
+  .topbar .menu{display:none}
+  @media (max-width:960px){.topbar .menu{display:grid}}
+  .tb-spacer{flex:1}
+  .datepill{font-size:.78rem; color:var(--ink-soft); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+  .hero{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:24px; align-items:start; margin-bottom:6px}
+  @media (max-width:860px){.hero{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(1.85rem,4vw,2.6rem); letter-spacing:-.015em}
+  .hero .greeting{margin:8px 0 18px; font-size:clamp(1rem,2.2vw,1.14rem); max-width:56ch}
+  .edit-name{background:none; border:0; cursor:pointer; color:var(--ink-faint); font-size:.82rem; padding:3px 5px; border-radius:6px; vertical-align:middle}
+  .edit-name:hover{color:var(--pine); background:var(--surface-2)}
+  .askbar{display:flex; gap:8px; background:var(--surface); border:1px solid var(--line); border-radius:15px; padding:8px; box-shadow:var(--shadow); max-width:580px}
+  .askbar input{flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:.95rem; color:var(--ink); padding:8px 12px; outline:none}
+  .askbar input::placeholder{color:var(--ink-faint)}
+  .askbar .btn.primary{white-space:nowrap}
+  .intention-show{margin-top:12px; max-width:580px}
+  .intention-show .tag{display:inline-flex; gap:10px; align-items:center; background:color-mix(in srgb,var(--dawn) 13%, transparent); border:1px solid color-mix(in srgb,var(--dawn) 32%, transparent); color:var(--ink); padding:9px 14px; border-radius:11px; font-weight:600; font-size:.9rem}
+  .intention-show .tag button{background:none; border:0; cursor:pointer; color:var(--ink-faint); font-size:.9rem; line-height:1}
+  .intention-show .tag button:hover{color:var(--crit)}
+  .chips{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+  .chip-btn{display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:9px 16px; font-weight:600; font-size:.86rem; color:var(--ink); text-decoration:none; transition:.15s; box-shadow:var(--shadow)}
+  .chip-btn:hover{border-color:var(--pine); color:var(--pine); transform:translateY(-1px)}
+  .hero-clocks{grid-template-columns:1fr}
+
+  .panel-head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:15px 18px 2px}
+  .panel-head .pt{font-family:var(--serif); font-weight:600; font-size:1.06rem}
+  .panel-head .ps{font-size:.8rem; color:var(--ink-faint); font-weight:600}
+
+  .scrim{position:fixed; inset:0; background:rgba(10,20,15,.4); opacity:0; pointer-events:none; transition:.25s; z-index:39}
+  @media (max-width:960px){
+    .sidebar{position:fixed; top:0; left:0; width:250px; transform:translateX(-101%); transition:transform .25s ease; box-shadow:0 24px 70px -22px rgba(0,0,0,.5)}
+    .sidebar.open{transform:none}
+    .scrim.on{opacity:1; pointer-events:auto}
+  }
 </style>
 
-<div class="wrap">
-  <header class="hero">
-    <div class="toprow">
-      <div>
-        <div class="brand">
-          <h1>Fresh Life<span class="dot">.</span></h1>
-          <span class="eyebrow" id="dateline">—</span>
-        </div>
-        <p class="greeting" id="greeting">A calm, colorful rhythm for a sharp mind — living between two time zones, one steady body.</p>
-      </div>
-      <div class="controls">
-        <a class="iconbtn" href="garden.html" title="Your forest — where rewards grow" aria-label="Open your reward forest">🌲</a>
-        <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
-      </div>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-brand"><span class="logo">🌿</span> Fresh Life<span class="dot">.</span></div>
+    <nav class="nav">
+      <a class="nav-i active" href="#routine"><span class="ic">🏠</span> Today</a>
+      <a class="nav-i" href="#timers"><span class="ic">⏱️</span> Rituals &amp; Timers</a>
+      <a class="nav-i" href="#marketsSection"><span class="ic">📈</span> Markets</a>
+      <a class="nav-i" href="#rebalance"><span class="ic">🧭</span> Rebalance</a>
+      <a class="nav-i" href="#diet"><span class="ic">🥗</span> Diet</a>
+      <a class="nav-i" href="#tips"><span class="ic">✦</span> Insights</a>
+      <a class="nav-i" href="#jetlag"><span class="ic">✈️</span> Jet lag</a>
+      <a class="nav-i" href="garden.html"><span class="ic">🌲</span> My Forest</a>
+    </nav>
+    <div class="side-promo">
+      <div class="sp-title">Your forest is growing</div>
+      <div class="sp-text">Every ritual you finish plants a tree. Bunnies &amp; squirrels follow.</div>
+      <a class="sp-btn" href="garden.html">Visit forest →</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="iconbtn menu" id="menuBtn" aria-label="Open menu">☰</button>
+      <span class="datepill" id="dateline">—</span>
+      <div class="tb-spacer"></div>
+      <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
+      <a class="iconbtn" href="garden.html" title="Your forest" aria-label="Open your reward forest">🌲</a>
     </div>
 
-    <div class="clocks" id="clocks">
+    <header class="hero">
+      <div class="hero-main">
+        <h1>Hello, <span id="userName">friend</span> <button class="edit-name" id="editName" title="Edit your name" aria-label="Edit your name">✎</button></h1>
+        <p class="greeting" id="greeting">A calm, colorful rhythm for a sharp mind — living between two time zones, one steady body.</p>
+        <div class="askbar">
+          <input id="intentionInput" type="text" placeholder="What matters most today?" aria-label="Set today's intention">
+          <button class="btn primary" id="intentionBtn">＋ Set intention</button>
+        </div>
+        <div class="intention-show" id="intentionShow"></div>
+        <div class="chips">
+          <a class="chip-btn" href="#timers">⏱️ Start a focus block</a>
+          <a class="chip-btn" href="#diet">🥗 Today's plate</a>
+          <a class="chip-btn" href="garden.html">🌲 Open my forest</a>
+        </div>
+      </div>
+
+    <div class="clocks hero-clocks" id="clocks">
       <button class="clock" data-region="china" style="--accent:var(--dawn)" aria-pressed="false">
         <span class="badge">home base</span>
         <div class="place">🇨🇳 China <span class="flagtag">Asia / Shanghai · CST</span></div>
@@ -294,12 +390,16 @@
       </div>
     </div>
     <div class="grid-2">
-      <div class="card"><div class="timeline" id="timeline"></div></div>
       <div class="card">
+        <div class="panel-head"><span class="pt">My Tasks</span><span class="ps">Today</span></div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><span class="pt">My Goals</span><span class="ps tnum" id="habitCount">0 / 0</span></div>
         <div class="habits" id="habits"></div>
         <div class="habits-foot">
           <div class="progressbar"><i id="habitProg"></i></div>
-          <span class="tnum muted" id="habitCount">0 / 0</span>
+          <span class="muted" style="font-size:.8rem">Daily rituals · tick as you go</span>
         </div>
       </div>
     </div>
@@ -339,7 +439,7 @@
   </section>
 
   <!-- ===== Markets ===== -->
-  <section id="markets">
+  <section id="marketsSection">
     <div class="sec-head">
       <div>
         <span class="eyebrow">The trader's clock</span>
@@ -433,7 +533,9 @@
     <div>Made with <span class="heart">♥</span> for a fresh, healthy, focused life. Your progress is saved privately in this browser.</div>
     <div style="margin-top:6px">General wellness guidance grounded in circadian, nutrition &amp; exercise research — not personalized medical advice. &nbsp;·&nbsp; <button class="reset-link" id="clearAll">Reset today's data</button></div>
   </footer>
+  </main>
 </div>
+<div class="scrim" id="scrim"></div>
 
 <script>
 "use strict";
@@ -962,4 +1064,54 @@ renderDiet(state.dietDay==null?dayIndex():state.dietDay);
 tickClocks();
 setInterval(tickClocks,1000);
 setInterval(function(){renderMarkets();renderTimeline();},30000);
+</script>
+
+<script>
+"use strict";
+/* ================= Shell: greeting name, intention, nav, mobile menu ================= */
+(function(){
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function today(){try{return todayStr();}catch(e){return "";}}
+
+  /* --- editable name --- */
+  var nameEl=document.getElementById("userName");
+  nameEl.textContent=state.name||"friend";
+  document.getElementById("editName").addEventListener("click",function(){
+    var n=prompt("What should I call you?",state.name||"");
+    if(n!==null){state.name=(n.trim()||"friend");save();nameEl.textContent=state.name;}
+  });
+
+  /* --- today's intention --- */
+  var input=document.getElementById("intentionInput");
+  var show=document.getElementById("intentionShow");
+  function renderIntention(){
+    if(state.intention&&state.intentionDate===today()){
+      show.innerHTML='<span class="tag">🌱 Today’s intention: '+esc(state.intention)+' <button id="clrInt" title="Clear intention" aria-label="Clear intention">✕</button></span>';
+      input.value="";
+      document.getElementById("clrInt").addEventListener("click",function(){state.intention="";save();renderIntention();});
+    }else{show.innerHTML="";}
+  }
+  function setInt(){var v=input.value.trim();if(!v)return;state.intention=v;state.intentionDate=today();save();renderIntention();}
+  document.getElementById("intentionBtn").addEventListener("click",setInt);
+  input.addEventListener("keydown",function(e){if(e.key==="Enter")setInt();});
+  renderIntention();
+
+  /* --- mobile sidebar --- */
+  var sb=document.getElementById("sidebar"),scrim=document.getElementById("scrim");
+  function toggle(open){sb.classList.toggle("open",open);scrim.classList.toggle("on",open);}
+  document.getElementById("menuBtn").addEventListener("click",function(){toggle(!sb.classList.contains("open"));});
+  scrim.addEventListener("click",function(){toggle(false);});
+  document.querySelectorAll(".nav-i").forEach(function(a){a.addEventListener("click",function(){if(window.innerWidth<=960)toggle(false);});});
+
+  /* --- active nav on scroll --- */
+  var links=[].slice.call(document.querySelectorAll('.nav-i[href^="#"]'));
+  var map={};links.forEach(function(a){var el=document.getElementById(a.getAttribute("href").slice(1));if(el)map[el.id]=a;});
+  var ids=Object.keys(map);
+  if("IntersectionObserver" in window && ids.length){
+    var obs=new IntersectionObserver(function(ents){
+      ents.forEach(function(en){if(en.isIntersecting){links.forEach(function(l){l.classList.remove("active");});map[en.target.id].classList.add("active");}});
+    },{rootMargin:"-42% 0px -52% 0px"});
+    ids.forEach(function(id){obs.observe(document.getElementById(id));});
+  }
+})();
 </script>
