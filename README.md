@@ -32,9 +32,9 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 - **🌲 A reward forest** — every ritual or finished timer plants a tree in [`garden.html`](garden.html). Keep going and bunnies, squirrels, and the occasional fox move in. It only ever grows.
 - **💞 Two-person mode** — pair with someone you love and cheer each other on (see below).
 - **🌸 A gentle AI companion** — encouragement and a kind read on your patterns, powered by Claude (see below).
-- **🌬️ A living sakura breeze** — a soft, drifting fog ([Vanta.js](https://www.vantajs.com/) / WebGL) animates behind the whole dashboard, tinted to the theme, with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
+- **🌸 A living sakura halo** — a glowing ring ([Vanta.js HALO](https://www.vantajs.com/?effect=halo) / WebGL) drifts behind the whole dashboard, tinted to the theme (a rose halo over plum at night, a soft rose glow by day), with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
 
-![The drifting sakura haze behind the UI](docs/screenshots/breeze.png)
+![The glowing sakura halo behind the UI](docs/screenshots/halo.png)
 
 <table>
 <tr>
