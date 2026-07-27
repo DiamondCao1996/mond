@@ -1,0 +1,80 @@
+/*!
+ * Fresh Life — tokens.css · design system (colour tokens, radius, type)
+ * A calm daily-ritual dashboard. https://github.com/DiamondCao1996/mond
+ */
+/* ============ Tokens: "Dawn in the pine forest" ============ */
+  :root{
+    --bg:#F4F7F1; --bg-grad:#EAF0E6;
+    --surface:#FCFDFA; --surface-2:#EEF3EA;
+    --ink:#16241C; --ink-soft:#4E5E54; --ink-faint:#7C8B81;
+    --line:#DBE5D5; --line-soft:#E7EEE2;
+    --pine:#1F6E4F; --pine-deep:#124A35;
+    --dawn:#DE844E; --dawn-soft:#F3E0D0;
+    --sky:#4381A8; --sky-soft:#DDEAF1;
+    --good:#2E9E6B; --warn:#B9832A; --crit:#C25B54;
+    --shadow:0 1px 2px rgba(20,40,30,.05), 0 8px 28px -14px rgba(20,50,35,.22);
+    --radius:16px; --radius-sm:10px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Cambria",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0D1411; --bg-grad:#111A15;
+      --surface:#151F1A; --surface-2:#1B2721;
+      --ink:#E8F0E9; --ink-soft:#A6B8AC; --ink-faint:#7A8C80;
+      --line:#26332C; --line-soft:#202B25;
+      --pine:#57BC8B; --pine-deep:#8AD8B3;
+      --dawn:#EBA06F; --dawn-soft:#3A2C22;
+      --sky:#7FB4D2; --sky-soft:#1D2B34;
+      --good:#4FBE88; --warn:#D8A552; --crit:#DE7A73;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7F1; --bg-grad:#EAF0E6; --surface:#FCFDFA; --surface-2:#EEF3EA;
+    --ink:#16241C; --ink-soft:#4E5E54; --ink-faint:#7C8B81; --line:#DBE5D5; --line-soft:#E7EEE2;
+    --pine:#1F6E4F; --pine-deep:#124A35; --dawn:#DE844E; --dawn-soft:#F3E0D0;
+    --sky:#4381A8; --sky-soft:#DDEAF1; --good:#2E9E6B; --warn:#B9832A; --crit:#C25B54;
+    --shadow:0 1px 2px rgba(20,40,30,.05), 0 8px 28px -14px rgba(20,50,35,.22);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1411; --bg-grad:#111A15; --surface:#151F1A; --surface-2:#1B2721;
+    --ink:#E8F0E9; --ink-soft:#A6B8AC; --ink-faint:#7A8C80; --line:#26332C; --line-soft:#202B25;
+    --pine:#57BC8B; --pine-deep:#8AD8B3; --dawn:#EBA06F; --dawn-soft:#3A2C22;
+    --sky:#7FB4D2; --sky-soft:#1D2B34; --good:#4FBE88; --warn:#D8A552; --crit:#DE7A73;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.6);
+  }
+
+/* ============ Sakura retheme (overrides the tokens above) ============ */
+  :root, :root[data-theme="light"]{
+    --bg:#FFF5F8; --bg-grad:#FFE6EE;
+    --surface:#FFFCFD; --surface-2:#FDEEF3;
+    --ink:#3E2733; --ink-soft:#7C5C68; --ink-faint:#AE8C97;
+    --line:#F5D6E0; --line-soft:#FBE8EE;
+    --pine:#E0679A; --pine-deep:#C24E82;
+    --dawn:#F2938E; --dawn-soft:#FCE0DC;
+    --sky:#A98BD6; --sky-soft:#EDE4F7;
+    --good:#4FBE9B; --warn:#D99A3C; --crit:#D96A7A;
+    --shadow:0 1px 2px rgba(120,40,70,.06), 0 10px 30px -14px rgba(190,70,120,.26);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#1A1015; --bg-grad:#20141B;
+      --surface:#241820; --surface-2:#2E1F28;
+      --ink:#F6E7EE; --ink-soft:#C9A9B7; --ink-faint:#9A7C89;
+      --line:#3A2833; --line-soft:#31212B;
+      --pine:#F090B4; --pine-deep:#F6B3CC;
+      --dawn:#F5A6A0; --dawn-soft:#3E2229;
+      --sky:#C3A9E8; --sky-soft:#2A2036;
+      --good:#5FCDA9; --warn:#E4B36A; --crit:#EE8A98;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1A1015; --bg-grad:#20141B; --surface:#241820; --surface-2:#2E1F28;
+    --ink:#F6E7EE; --ink-soft:#C9A9B7; --ink-faint:#9A7C89; --line:#3A2833; --line-soft:#31212B;
+    --pine:#F090B4; --pine-deep:#F6B3CC; --dawn:#F5A6A0; --dawn-soft:#3E2229;
+    --sky:#C3A9E8; --sky-soft:#2A2036; --good:#5FCDA9; --warn:#E4B36A; --crit:#EE8A98;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.65);
+  }
