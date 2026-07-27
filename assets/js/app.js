@@ -8,6 +8,7 @@
 var KEY="freshlife.v1";
 var state=load();
 if(state.theme)document.documentElement.setAttribute("data-theme",state.theme);
+var FL_LANG=(window.FL_LANG)||(state.lang)||"en"; window.FL_LANG=FL_LANG;
 function load(){
   try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object")return s;}catch(e){}
   return {region:"china",habits:{},streaks:{},lastReset:null,dietDay:null,jetDir:"toSweden"};
@@ -41,38 +42,30 @@ function fmtMin(m){m=((m%1440)+1440)%1440;var h=Math.floor(m/60),mm=m%60;return 
 function pad(n){return (n<10?"0":"")+n;}
 
 /* ================= Header clocks ================= */
+function locale(){return FL_LANG==="zh"?"zh-CN":FL_LANG==="sv"?"sv-SE":"en-GB";}
 function dayPhase(min){
-  if(min<300)return "deep rest";
-  if(min<420)return "dawn";
-  if(min<720)return "morning focus";
-  if(min<1020)return "afternoon";
-  if(min<1290)return "evening";
-  return "wind-down";
+  var k=min<300?"ph_rest":min<420?"ph_dawn":min<720?"ph_morning":min<1020?"ph_afternoon":min<1290?"ph_evening":"ph_wind";
+  return TX(k);
 }
 function tickClocks(){
-  var now=new Date();
+  var now=new Date(),loc=locale();
   document.querySelectorAll(".clock").forEach(function(c){
     var tz=c.querySelector(".time").getAttribute("data-tz");
     var p=parts(tz,now);
     c.querySelector(".hm").textContent=p.hour+":"+p.minute;
     c.querySelector(".sec").textContent=":"+p.second;
     var min=(+p.hour)*60+(+p.minute);
-    var df=new Intl.DateTimeFormat("en-GB",{timeZone:tz,weekday:"short",day:"numeric",month:"short"});
+    var df=new Intl.DateTimeFormat(loc,{timeZone:tz,weekday:"short",day:"numeric",month:"short"});
     c.querySelector("[data-date]").textContent=df.format(now);
     c.querySelector("[data-phase]").textContent=dayPhase(min);
   });
   // dateline in header from active region tz
   var tz=state.region==="china"?"Asia/Shanghai":"Europe/Stockholm";
-  var dl=new Intl.DateTimeFormat("en-GB",{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  var dl=new Intl.DateTimeFormat(loc,{timeZone:tz,weekday:"long",day:"numeric",month:"long",year:"numeric"});
   document.getElementById("dateline").textContent=dl.format(now);
   var h=tzMinutesNow(tz,now);
-  var g=h<300?"The world is asleep — so should you be. Rest is the first ritual.":
-        h<420?"Dawn. Meet the light — it sets your whole clock.":
-        h<720?"Fresh morning. Best hours of the mind — spend them on what matters.":
-        h<1020?"Steady afternoon. Move a little, eat light, stay bright.":
-        h<1290?"Evening. Cook, unwind, let the screens dim.":
-        "Late. Close the loop and protect tomorrow's you.";
-  document.getElementById("greeting").textContent=g;
+  var gk=h<300?"gr_night":h<420?"gr_dawn":h<720?"gr_morning":h<1020?"gr_afternoon":h<1290?"gr_evening":"gr_late";
+  document.getElementById("greeting").textContent=TX(gk);
 }
 
 /* ================= Region toggle ================= */
@@ -83,9 +76,7 @@ function setRegion(r){
     c.classList.toggle("active",on);c.setAttribute("aria-pressed",on?"true":"false");
   });
   renderTimeline();
-  document.getElementById("routineSub").textContent = r==="china"
-    ? "China profile — anchored to an early, bright morning and a warm, early dinner. Tick each ritual as you go."
-    : "Sweden profile — shifted to the Nordic light and later dusk. Friluftsliv woven through the day. Tick each ritual as you go.";
+  document.getElementById("routineSub").textContent = TX(r==="china"?"routine_cn":"routine_se");
   tickClocks();
 }
 
@@ -175,7 +166,7 @@ function renderHabits(){
     html+='<div class="habit'+(done?' done':'')+'" data-id="'+h.id+'" role="checkbox" tabindex="0" aria-checked="'+done+'">'+
       '<span class="box"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'+
       '<span class="txt"><span class="name">'+h.name+'</span><br><span class="nudge">'+nudge+'</span></span>'+
-      '<span class="streak'+(st>0?' on':'')+'" title="day streak">◇'+st+'</span></div>';
+      '<span class="streak'+(st>0?' on':'')+'" title="'+TX("streak_title")+'">◇'+st+'</span></div>';
   });
   document.getElementById("habits").innerHTML=html;
   updateHabitProgress();
@@ -216,7 +207,7 @@ function renderPresets(){
   var html="";
   TIMERS.forEach(function(t){
     html+='<button class="preset'+(t.id===timer.preset.id?' active':'')+'" data-id="'+t.id+'">'+
-      '<span class="p-min tnum">'+t.min+'m</span>'+
+      '<span class="p-min tnum">'+t.min+TX("unit_min")+'</span>'+
       '<span><span class="p-name">'+t.name+'</span><br><span class="p-desc">'+t.desc+'</span></span></button>';
   });
   document.getElementById("presets").innerHTML=html;
@@ -235,26 +226,26 @@ function selectPreset(id){
   timer.preset=TIMERS.filter(function(t){return t.id===id;})[0];
   timer.total=timer.remaining=timer.preset.min*60;
   renderPresets();paintDial();
-  document.getElementById("tStart").textContent="Start";
+  document.getElementById("tStart").textContent=TX("t_start");
 }
 function tick(){
   if(timer.remaining>0){timer.remaining--;paintDial();}
-  else{stopTimer();chime();state.rewardsEarned=(state.rewardsEarned||0)+1;save();document.getElementById("tStart").textContent="Start";flashDone();}
+  else{stopTimer();chime();state.rewardsEarned=(state.rewardsEarned||0)+1;save();document.getElementById("tStart").textContent=TX("t_start");flashDone();}
 }
 function startTimer(){
   if(timer.running)return;
   if(timer.remaining<=0){timer.remaining=timer.total;}
   timer.running=true;timer.handle=setInterval(tick,1000);
-  document.getElementById("tStart").textContent="Pause";
+  document.getElementById("tStart").textContent=TX("t_pause");
 }
-function pauseTimer(){timer.running=false;clearInterval(timer.handle);document.getElementById("tStart").textContent="Resume";}
+function pauseTimer(){timer.running=false;clearInterval(timer.handle);document.getElementById("tStart").textContent=TX("t_resume");}
 function stopTimer(){timer.running=false;clearInterval(timer.handle);}
 function flashDone(){
   var lbl=document.getElementById("dialLbl");var old=lbl.textContent;
-  lbl.textContent="Done — well done ♥";setTimeout(function(){lbl.textContent=timer.preset.name;},4000);
+  lbl.textContent=TX("t_done");setTimeout(function(){lbl.textContent=timer.preset.name;},4000);
 }
 document.getElementById("tStart").addEventListener("click",function(){timer.running?pauseTimer():startTimer();});
-document.getElementById("tReset").addEventListener("click",function(){stopTimer();timer.remaining=timer.total;paintDial();document.getElementById("tStart").textContent="Start";});
+document.getElementById("tReset").addEventListener("click",function(){stopTimer();timer.remaining=timer.total;paintDial();document.getElementById("tStart").textContent=TX("t_start");});
 document.getElementById("presets").addEventListener("click",function(e){var b=e.target.closest(".preset");if(b)selectPreset(b.getAttribute("data-id"));});
 // gentle chime via WebAudio (no assets)
 function chime(){
@@ -291,10 +282,10 @@ function marketState(m,now){
   var status=inSession?"open":(open&&edgeLabel==="opens"?"pre":"closed");
   var countdown="";
   if(nextEdge!=null){
-    var diff=nextEdge-cur,hh=Math.floor(diff/60),mm=diff%60;
-    countdown=edgeLabel+" in "+(hh>0?hh+"h ":"")+mm+"m";
+    var diff=nextEdge-cur,hh=Math.floor(diff/60),mm=diff%60,dur=(hh>0?hh+"h ":"")+mm+"m";
+    countdown=TP(edgeLabel==="opens"?"mkt_opens":"mkt_closes",{t:dur});
   }else if(status==="closed"){
-    countdown = open ? "closed for the day" : "weekend — markets rest";
+    countdown = open ? TX("mkt_closed_day") : TX("mkt_weekend");
   }
   return {status:status,countdown:countdown};
 }
@@ -303,18 +294,18 @@ function renderMarkets(){
   MARKETS.forEach(function(m){
     var st=marketState(m,now);
     var pcls=st.status==="open"?"open":(st.status==="pre"?"pre":"closed");
-    var ptxt=st.status==="open"?"Open":(st.status==="pre"?"Pre-open":"Closed");
+    var ptxt=st.status==="open"?TX("mkt_open"):(st.status==="pre"?TX("mkt_pre"):TX("mkt_closed"));
     // convert first & last session edges into China + Sweden local
     var first=m.sessions[0][0], last=m.sessions[m.sessions.length-1][1];
     var cnOpen=convertWall(m.tz,"Asia/Shanghai",first,now), cnClose=convertWall(m.tz,"Asia/Shanghai",last,now);
     var seOpen=convertWall(m.tz,"Europe/Stockholm",first,now), seClose=convertWall(m.tz,"Europe/Stockholm",last,now);
     html+='<div class="card market">'+
       '<div class="m-top"><span class="m-name">'+m.name+'</span><span class="pill '+pcls+'">'+ptxt+'</span></div>'+
-      '<div class="m-sub">'+m.sub+' · local '+fmtMin(first)+'–'+fmtMin(last)+'</div>'+
+      '<div class="m-sub">'+m.sub+' · '+TX("mkt_localrange")+' '+fmtMin(first)+'–'+fmtMin(last)+'</div>'+
       '<div class="m-count tnum">'+st.countdown+'</div>'+
       '<div class="m-local">'+
-        '<div class="row"><span>🇨🇳 China time</span><span class="val tnum">'+fmtMin(cnOpen)+'–'+fmtMin(cnClose)+'</span></div>'+
-        '<div class="row"><span>🇸🇪 Sweden time</span><span class="val tnum">'+fmtMin(seOpen)+'–'+fmtMin(seClose)+'</span></div>'+
+        '<div class="row"><span>'+TX("mkt_cn")+'</span><span class="val tnum">'+fmtMin(cnOpen)+'–'+fmtMin(cnClose)+'</span></div>'+
+        '<div class="row"><span>'+TX("mkt_se")+'</span><span class="val tnum">'+fmtMin(seOpen)+'–'+fmtMin(seClose)+'</span></div>'+
       '</div></div>';
   });
   document.getElementById("markets").innerHTML=html;
@@ -359,15 +350,16 @@ var DIET=[
     ["Snack","Pear + yogurt","Pear slices, plain yogurt, cinnamon","~160 kcal"]]}
 ];
 var dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var dayInitials=["S","M","T","W","T","F","S"];
 function renderDaypicker(sel){
-  var html="";["S","M","T","W","T","F","S"].forEach(function(l,i){
+  var html="";dayInitials.forEach(function(l,i){
     html+='<button class="'+(i===sel?"sel":"")+'" data-i="'+i+'" title="'+dayNames[i]+'">'+l+'</button>';
   });
   document.getElementById("daypicker").innerHTML=html;
 }
 function renderDiet(sel){
   var day=DIET[sel];
-  document.getElementById("dietDayName").textContent=day.d+" · lighter, brighter";
+  document.getElementById("dietDayName").textContent=day.d+" "+TX("diet_sub");
   var html="";
   day.meals.forEach(function(m){
     html+='<div class="meal"><div class="m-when">'+m[0]+'</div><div class="m-dish">'+m[1]+'</div>'+
@@ -506,7 +498,7 @@ document.getElementById("themeBtn").addEventListener("click",function(){
 
 /* ================= Clear ================= */
 document.getElementById("clearAll").addEventListener("click",function(){
-  if(confirm("Reset today's habit checks and streaks?")){
+  if(confirm(TX("confirm_reset"))){
     state.habits={};state.streaks={};save();renderHabits();
   }
 });
@@ -516,16 +508,40 @@ document.getElementById("clocks").addEventListener("click",function(e){
   var c=e.target.closest(".clock");if(c)setRegion(c.getAttribute("data-region"));
 });
 
-/* ================= Boot ================= */
+/* ================= i18n data swap + boot ================= */
+var EN_DATA={SCHEDULES:SCHEDULES,HABITS:HABITS,TIMERS:TIMERS,MARKETS:MARKETS,DIET:DIET,TIPS:TIPS,REBALANCE:REBALANCE,JET:JET,dayNames:dayNames,dayInitials:dayInitials};
+function loadData(){
+  var d=(FL_LANG!=="en"&&window.FL_DATA&&window.FL_DATA[FL_LANG])||EN_DATA;
+  SCHEDULES=d.SCHEDULES||EN_DATA.SCHEDULES;HABITS=d.HABITS||EN_DATA.HABITS;TIMERS=d.TIMERS||EN_DATA.TIMERS;
+  MARKETS=d.MARKETS||EN_DATA.MARKETS;DIET=d.DIET||EN_DATA.DIET;TIPS=d.TIPS||EN_DATA.TIPS;
+  REBALANCE=d.REBALANCE||EN_DATA.REBALANCE;JET=d.JET||EN_DATA.JET;dayNames=d.dayNames||EN_DATA.dayNames;dayInitials=d.dayInitials||EN_DATA.dayInitials;
+}
+function reRenderAll(){
+  setRegion(state.region);
+  renderHabits();
+  renderPresets();paintDial();
+  renderMarkets();
+  renderTips();
+  renderRebalance(state.rebKey||"nosleep");
+  renderJet(state.jetDir);
+  renderDiet(state.dietDay==null?dayIndex():state.dietDay);
+  tickClocks();
+}
+// called by i18n.js flSetLang when the language changes
+window.__flRerender=function(){
+  FL_LANG=window.FL_LANG;state.lang=FL_LANG;save();
+  loadData();
+  var pid=timer.preset&&timer.preset.id;
+  var fresh=(timer.running===false&&timer.remaining===timer.total);
+  timer.preset=TIMERS.filter(function(x){return x.id===pid;})[0]||TIMERS[0];
+  if(fresh){timer.total=timer.remaining=timer.preset.min*60;}
+  reRenderAll();
+};
+
+loadData();
+timer.preset=TIMERS.filter(function(x){return x.id===timer.preset.id;})[0]||TIMERS[0];
+timer.total=timer.remaining=timer.preset.min*60;
 dailyReset();
-setRegion(state.region);
-renderHabits();
-renderPresets();paintDial();
-renderMarkets();
-renderTips();
-renderRebalance(state.rebKey||"nosleep");
-renderJet(state.jetDir);
-renderDiet(state.dietDay==null?dayIndex():state.dietDay);
-tickClocks();
+reRenderAll();
 setInterval(tickClocks,1000);
 setInterval(function(){renderMarkets();renderTimeline();},30000);

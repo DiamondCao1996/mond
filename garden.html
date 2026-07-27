@@ -7,22 +7,27 @@
   <div class="toprow">
     <div>
       <div class="brand">
-        <h1>Your Forest<span class="dot">.</span></h1>
-        <span class="eyebrow">grown from your rituals</span>
+        <h1><span data-i18n="g_title">Your Forest</span><span class="dot">.</span></h1>
+        <span class="eyebrow" data-i18n="g_grown">grown from your rituals</span>
       </div>
       <p class="greeting" id="greeting">Every ritual you finish plants something living here. Trees, mostly — but keep it up and a bunny, a squirrel, sometimes a fox will come to stay.</p>
     </div>
     <div class="controls">
-      <a class="iconbtn" href="index.html" title="Back to Fresh Life" aria-label="Back to the dashboard">← Dashboard</a>
+      <a class="iconbtn" href="index.html" title="Back to Fresh Life" aria-label="Back to the dashboard" data-i18n="g_back">← Dashboard</a>
+      <select id="langSel" class="langsel" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="sv">Svenska</option>
+      </select>
       <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme" style="padding:0;width:40px">◐</button>
     </div>
   </div>
 
   <div class="stats">
-    <div class="stat trees"><div class="n tnum" id="sTrees">0</div><div class="l">🌲 Trees planted</div></div>
-    <div class="stat greenery"><div class="n tnum" id="sGreen">0</div><div class="l">🌿 Shrubs &amp; blooms</div></div>
-    <div class="stat critters"><div class="n tnum" id="sCritters">0</div><div class="l">🐰 Friends befriended</div></div>
-    <div class="stat total"><div class="n tnum" id="sTotal">0</div><div class="l">✦ Living things</div></div>
+    <div class="stat trees"><div class="n tnum" id="sTrees">0</div><div class="l" data-i18n="g_trees">🌲 Trees planted</div></div>
+    <div class="stat greenery"><div class="n tnum" id="sGreen">0</div><div class="l" data-i18n="g_shrubs">🌿 Shrubs &amp; blooms</div></div>
+    <div class="stat critters"><div class="n tnum" id="sCritters">0</div><div class="l" data-i18n="g_friends">🐰 Friends befriended</div></div>
+    <div class="stat total"><div class="n tnum" id="sTotal">0</div><div class="l" data-i18n="g_living">✦ Living things</div></div>
   </div>
 
   <div class="scene" id="scene">
@@ -39,29 +44,32 @@
     <div class="motes" id="motes" aria-hidden="true"></div>
     <div class="plants" id="plants" aria-hidden="true"></div>
     <div class="empty" id="empty" hidden>
-      <div class="big">A quiet, waiting meadow 🌱</div>
-      <div class="sm">Complete a ritual or finish a timer on the dashboard — your first tree takes root here.</div>
+      <div class="big" data-i18n="g_empty_big">A quiet, waiting meadow 🌱</div>
+      <div class="sm" data-i18n="g_empty_sm">Complete a ritual or finish a timer on the dashboard — your first tree takes root here.</div>
     </div>
   </div>
 
   <div class="scene-foot">
     <div class="legend">
-      <span><i class="dotc" style="background:#2c724f"></i> Trees</span>
-      <span><i class="dotc" style="background:#3f8a5c"></i> Shrubs &amp; ferns</span>
-      <span><i class="dotc" style="background:#c47844"></i> Squirrel</span>
-      <span><i class="dotc" style="background:#e7e1d7;border:1px solid #ccc"></i> Bunny</span>
-      <span><i class="dotc" style="background:#e07a3c"></i> Fox <span class="faint">(rare)</span></span>
+      <span><i class="dotc" style="background:#2c724f"></i> <span data-i18n="g_l_trees">Trees</span></span>
+      <span><i class="dotc" style="background:#3f8a5c"></i> <span data-i18n="g_l_shrubs">Shrubs &amp; ferns</span></span>
+      <span><i class="dotc" style="background:#c47844"></i> <span data-i18n="g_l_squirrel">Squirrel</span></span>
+      <span><i class="dotc" style="background:#e7e1d7;border:1px solid #ccc"></i> <span data-i18n="g_l_bunny">Bunny</span></span>
+      <span><i class="dotc" style="background:#e07a3c"></i> <span data-i18n="g_l_fox">Fox</span> <span class="faint" data-i18n="g_l_rare">(rare)</span></span>
     </div>
-    <button class="linkbtn" id="reshuffle">Reshuffle the meadow</button>
+    <button class="linkbtn" id="reshuffle" data-i18n="g_reshuffle">Reshuffle the meadow</button>
   </div>
 
-  <div class="note" id="note">Your forest grows one small act at a time. There's no losing it — whatever you plant stays, season after season. <b>Come back and watch it fill in.</b></div>
+  <div class="note" id="note" data-i18n-html="g_note">Your forest grows one small act at a time. There's no losing it — whatever you plant stays, season after season. <b>Come back and watch it fill in.</b></div>
 
   <footer>
-    <div>Made with <span class="heart">♥</span> — a living reward for a fresh, focused life. Your forest is saved privately in this browser.</div>
+    <div data-i18n="g_foot">Made with ♥ — a living reward for a fresh, focused life. Your forest is saved privately in this browser.</div>
   </footer>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/i18n-zh.js"></script>
+<script src="assets/js/i18n-sv.js"></script>
 <script src="assets/js/garden.js"></script>

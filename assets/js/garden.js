@@ -143,14 +143,12 @@ function render(){
   // greeting + toast on new growth
   var added=f.plants.length-(f.seen||0);
   if(added>0 && (f.seen||0)>=0 && f.plants.length>added){
-    toast("🌿 "+added+" new "+(added===1?"friend":"friends")+" took root in your forest");
+    toast((window.TP?TP("g_toast",{n:added}):added+" new friends took root in your forest"));
   }
   if(f.plants.length===0){
-    document.getElementById("greeting").textContent="Your meadow is quiet and waiting. Finish a ritual or a focus timer on the dashboard, and the first tree takes root right here.";
+    document.getElementById("greeting").textContent=(window.TX?TX("g_greet_empty"):"Your meadow is quiet and waiting.");
   }else{
-    var g=["A forest of "+f.plants.length+" living things, each one a promise you kept.",
-      "Look what your small, steady acts have grown.",
-      "Every tree here is a ritual you finished. Keep going — the critters follow the trees."];
+    var g=window.TP?[TP("g_greet1",{n:f.plants.length}),TX("g_greet2"),TX("g_greet3")]:["A forest of "+f.plants.length+" living things."];
     document.getElementById("greeting").textContent=pick(g);
   }
   f.seen=f.plants.length; save();
@@ -188,6 +186,7 @@ document.getElementById("reshuffle").addEventListener("click",function(){
 });
 
 /* ============ Boot ============ */
+window.__flRerenderGarden=function(){render();};
 ensureForest();
 render();
 // live-refresh if rituals are completed in another tab

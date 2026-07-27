@@ -100,6 +100,8 @@
   .brand .dot{color:var(--dawn)}
   .greeting{font-size:clamp(1rem,2.4vw,1.12rem); color:var(--ink-soft); margin-top:6px; max-width:64ch}
   .controls{display:flex; gap:8px; align-items:center}
+  .langsel{border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); height:40px; border-radius:11px; padding:0 10px; font:inherit; font-size:.82rem; font-weight:600; cursor:pointer}
+  .langsel:hover{border-color:var(--pine); color:var(--ink)}
   .iconbtn{
     border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); text-decoration:none;
     height:40px; min-width:40px; padding:0 12px; border-radius:11px; cursor:pointer; font-size:.9rem; font-weight:600;

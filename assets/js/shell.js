@@ -11,10 +11,10 @@
 
   /* --- editable name --- */
   var nameEl=document.getElementById("userName");
-  nameEl.textContent=state.name||"friend";
+  nameEl.textContent=state.name||TX("name_friend");
   document.getElementById("editName").addEventListener("click",function(){
-    var n=prompt("What should I call you?",state.name||"");
-    if(n!==null){state.name=(n.trim()||"friend");save();nameEl.textContent=state.name;}
+    var n=prompt(TX("name_prompt"),state.name||"");
+    if(n!==null){state.name=(n.trim()||TX("name_friend"));save();nameEl.textContent=state.name;}
   });
 
   /* --- today's intention --- */
@@ -22,7 +22,7 @@
   var show=document.getElementById("intentionShow");
   function renderIntention(){
     if(state.intention&&state.intentionDate===today()){
-      show.innerHTML='<span class="tag">🌱 Today’s intention: '+esc(state.intention)+' <button id="clrInt" title="Clear intention" aria-label="Clear intention">✕</button></span>';
+      show.innerHTML='<span class="tag">'+TX("intention_today")+' '+esc(state.intention)+' <button id="clrInt" title="Clear intention" aria-label="Clear intention">✕</button></span>';
       input.value="";
       document.getElementById("clrInt").addEventListener("click",function(){state.intention="";save();renderIntention();});
     }else{show.innerHTML="";}

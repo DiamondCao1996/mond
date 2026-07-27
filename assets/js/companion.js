@@ -12,7 +12,7 @@
   function totalHabits(){return (window.HABITS&&HABITS.length)||10;}
   function myDone(){var n=0,h=state.habits||{};for(var k in h)if(h[k])n++;return n;}
   function myStreakMax(){var m=0,s=state.streaks||{};for(var k in s)if(s[k]>m)m=s[k];return m;}
-  function mySnap(){return {name:(state.name||"friend"),done:myDone(),total:totalHabits(),streak:myStreakMax(),rewards:(state.rewardsEarned||0),region:state.region,intention:(state.intention&&state.intentionDate===today())?state.intention:""};}
+  function mySnap(){return {name:(state.name||TX("name_friend")),done:myDone(),total:totalHabits(),streak:myStreakMax(),rewards:(state.rewardsEarned||0),region:state.region,intention:(state.intention&&state.intentionDate===today())?state.intention:""};}
   function setName(n){state.name=n;save();var u=$("userName");if(u)u.textContent=n;}
 
   /* ---------- Collaboration (PeerJS, room-code pairing) ---------- */
@@ -20,58 +20,58 @@
   function setChip(){
     var chip=$("pairChip"),txt=$("pcTxt");if(!chip)return;
     chip.classList.toggle("online",P.online);
-    if(P.online)txt.textContent=(state.partnerName||"Partner")+" · online";
-    else if(state.pair&&state.pair.code)txt.textContent="Paired ("+state.pair.code+") · offline";
-    else txt.textContent="Just you — invite a partner";
+    if(P.online)txt.textContent=TP("pc_online",{name:(state.partnerName||TX("p_partner"))});
+    else if(state.pair&&state.pair.code)txt.textContent=TP("pc_paired",{code:state.pair.code});
+    else txt.textContent=TX("pc_justyou");
   }
   function person(s,cls,online){
     var init=((s.name||"?").trim().charAt(0)||"?").toUpperCase();
-    var st=online?'<span class="st">online</span>':'<span class="st off">offline</span>';
+    var st=online?'<span class="st">'+TX("p_online")+'</span>':'<span class="st off">'+TX("p_offline")+'</span>';
     return '<div class="tg-person '+cls+'"><div class="av">'+esc(init)+'</div><div class="info">'+
-      '<div class="nm">'+esc(s.name||"Someone")+' '+st+'</div>'+
-      '<div class="bars">🌱 rituals <b>'+s.done+'/'+s.total+'</b> · 🔥 streak <b>'+s.streak+'</b> · 🌸 forest <b>'+s.rewards+'</b></div>'+
+      '<div class="nm">'+esc(s.name||TX("p_someone"))+' '+st+'</div>'+
+      '<div class="bars">🌱 '+TX("p_rituals")+' <b>'+s.done+'/'+s.total+'</b> · 🔥 '+TX("p_streak")+' <b>'+s.streak+'</b> · 🌸 '+TX("p_forest")+' <b>'+s.rewards+'</b></div>'+
       (s.intention?'<div class="bars">✨ '+esc(s.intention)+'</div>':'')+'</div></div>';
   }
   function renderTogether(){
     var ps=$("togetherPs"),empty=$("tgEmpty"),live=$("tgLive");if(!ps)return;
     var paired=!!(state.pair&&state.pair.code);
-    if(!paired){ps.textContent="Not paired";empty.hidden=false;live.hidden=true;setChip();return;}
+    if(!paired){ps.textContent=TX("tg_notpaired");empty.hidden=false;live.hidden=true;setChip();return;}
     empty.hidden=true;live.hidden=false;
-    ps.textContent=P.online?"Connected 🌸":"Waiting for partner…";
+    ps.textContent=P.online?TX("tg_connected"):TX("tg_waiting");
     var html=person(mySnap(),"me",true);
     if(P.partner)html+=person(P.partner,"partner",P.online);
-    else html+='<div class="tg-note">Waiting for '+esc(state.partnerName||"your partner")+' to open Fresh Life…</div>';
-    html+='<div class="tg-note">Synced directly between the two of you — nothing is stored on a server.</div>';
+    else html+='<div class="tg-note">'+TP("tg_waitfor",{name:esc(state.partnerName||TX("p_partner"))})+'</div>';
+    html+='<div class="tg-note">'+TX("tg_synced")+'</div>';
     live.innerHTML=html;setChip();
   }
   function broadcast(){if(P.conn&&P.conn.open){try{P.conn.send({t:"snap",snap:mySnap()});}catch(e){}}}
   function onData(msg){if(!msg||msg.t!=="snap")return;P.partner=msg.snap;if(msg.snap&&msg.snap.name){state.partnerName=msg.snap.name;save();}renderTogether();}
   function wireConn(conn){
     P.conn=conn;
-    conn.on("open",function(){P.online=true;P.retry=0;broadcast();renderTogether();status("Connected 🌸");});
+    conn.on("open",function(){P.online=true;P.retry=0;broadcast();renderTogether();status(TX("pm_status_conn"));});
     conn.on("data",onData);
     conn.on("close",function(){P.online=false;renderTogether();});
     conn.on("error",function(){P.online=false;renderTogether();});
   }
   function status(t){var s=$("pmStatus");if(s)s.textContent=t;}
   function host(code){
-    if(!window.Peer){status("Realtime library didn't load — check your connection and reload.");return;}
-    try{P.peer=new Peer("fl-"+code);}catch(e){status("Could not start — try again.");return;}
-    P.peer.on("open",function(){status("Space ready. Share code "+code+" with your partner.");});
+    if(!window.Peer){status(TX("pm_status_nolib"));return;}
+    try{P.peer=new Peer("fl-"+code);}catch(e){status(TX("pm_status_nolib"));return;}
+    P.peer.on("open",function(){status(TP("pm_status_ready",{code:code}));});
     P.peer.on("connection",wireConn);
     P.peer.on("error",function(err){
       if(err&&err.type==="unavailable-id"){var c=genCode();state.pair={code:c,role:"host"};save();if($("pmCode"))$("pmCode").textContent=c.split("").join(" ");if($("pairModal"))$("pairModal").dataset.code=c;host(c);}
-      else status("Connection issue: "+((err&&err.type)||"unknown"));
+      else status(TP("pm_status_issue",{t:((err&&err.type)||"unknown")}));
     });
   }
   function join(code){
-    if(!window.Peer){status("Realtime library didn't load — check your connection and reload.");return;}
-    try{P.peer=new Peer();}catch(e){status("Could not start — try again.");return;}
-    P.peer.on("open",function(){status("Looking for "+code+"…");wireConn(P.peer.connect("fl-"+code,{reliable:true}));});
+    if(!window.Peer){status(TX("pm_status_nolib"));return;}
+    try{P.peer=new Peer();}catch(e){status(TX("pm_status_nolib"));return;}
+    P.peer.on("open",function(){status(TP("pm_status_look",{code:code}));wireConn(P.peer.connect("fl-"+code,{reliable:true}));});
     P.peer.on("error",function(err){
       P.online=false;
-      if(err&&err.type==="peer-unavailable"){status("Partner isn't online yet — I'll keep trying.");P.retry++;if(P.retry<60&&state.pair){setTimeout(function(){try{P.peer&&P.peer.destroy();}catch(e){}join(code);},5000);}}
-      else status("Connection issue: "+((err&&err.type)||"unknown"));
+      if(err&&err.type==="peer-unavailable"){status(TX("pm_status_wait"));P.retry++;if(P.retry<60&&state.pair){setTimeout(function(){try{P.peer&&P.peer.destroy();}catch(e){}join(code);},5000);}}
+      else status(TP("pm_status_issue",{t:((err&&err.type)||"unknown")}));
       renderTogether();
     });
   }
@@ -97,19 +97,19 @@
     state.pair={code:code,role:"host"};save();
     $("pmCopy").hidden=false;startPair();renderTogether();
   });
-  if($("pmCopy"))$("pmCopy").addEventListener("click",function(){var c=(($("pairModal").dataset.code)||"").replace(/\s/g,"");if(navigator.clipboard)navigator.clipboard.writeText(c);status("Code copied — send it to your partner.");});
+  if($("pmCopy"))$("pmCopy").addEventListener("click",function(){var c=(($("pairModal").dataset.code)||"").replace(/\s/g,"");if(navigator.clipboard)navigator.clipboard.writeText(c);status(TX("pm_status_copied"));});
   if($("pmJoinBtn"))$("pmJoinBtn").addEventListener("click",function(){
     var code=($("pmJoin").value||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"");
-    if(code.length<4){status("Enter the code your partner shared.");return;}
+    if(code.length<4){status(TX("pm_status_needcode"));return;}
     var name=($("pmName").value||"").trim();if(name)setName(name);
-    state.pair={code:code,role:"guest"};save();startPair();renderTogether();status("Joining "+code+"…");
+    state.pair={code:code,role:"guest"};save();startPair();renderTogether();status(TP("pm_status_join",{code:code}));
   });
 
   /* ---------- Settings modal ---------- */
   function openSet(){$("setName").value=state.name||"";$("setKey").value=state.apiKey||"";$("setModel").value=state.model||"claude-opus-4-8";$("setModal").hidden=false;}
   if($("settingsBtn"))$("settingsBtn").addEventListener("click",openSet);
   if($("setSave"))$("setSave").addEventListener("click",function(){
-    setName(($("setName").value||"").trim()||state.name||"friend");
+    setName(($("setName").value||"").trim()||state.name||TX("name_friend"));
     state.apiKey=($("setKey").value||"").trim();
     state.model=($("setModel").value||"").trim()||"claude-opus-4-8";
     save();updateAiPs();closeModals();broadcast();
@@ -117,7 +117,7 @@
   if($("setClear"))$("setClear").addEventListener("click",function(){state.apiKey="";state.chat=[];save();renderChat();updateAiPs();});
 
   /* ---------- AI companion ---------- */
-  function updateAiPs(){var el=$("aiPs");if(el)el.textContent=state.apiKey?"ready":"add a key in ⚙ Settings";}
+  function updateAiPs(){var el=$("aiPs");if(el)el.textContent=state.apiKey?TX("ai_ready"):TX("ai_needkey");}
   // markdown-lite → tidy HTML (bold headline + bullets), for a clean ADHD-friendly layout
   function inlineMd(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");}
   function fmt(raw){
@@ -134,7 +134,7 @@
   }
   function renderChat(){
     var w=$("chatwrap");if(!w)return;var chat=state.chat||[];
-    if(!chat.length){w.innerHTML='<div class="chat-hint">Say hello, or tap a prompt below. Your companion already knows how your day is going 🌸</div>';return;}
+    if(!chat.length){w.innerHTML='<div class="chat-hint">'+esc(TX("chat_hint"))+'</div>';return;}
     w.innerHTML=chat.map(function(m){return '<div class="bubble '+(m.role==="user"?"me":"ai")+'">'+(m.role==="user"?esc(m.text):fmt(m.text))+'</div>';}).join("");
     w.scrollTop=w.scrollHeight;
   }
@@ -149,29 +149,34 @@
   var busy=false;
   function send(text){
     if(busy)return;text=(text||"").trim();if(!text)return;
-    if(!state.apiKey){pushChat("assistant","I'd love to chat — add your Claude API key in ⚙ Settings first (it stays private in your browser).");openSet();return;}
+    if(!state.apiKey){pushChat("assistant",TX("chat_needkey"));openSet();return;}
     var prior=(state.chat||[]).map(function(m){return {role:m.role,content:m.text};});
     pushChat("user",text);
     var w=$("chatwrap"),think=document.createElement("div");think.className="bubble ai think";think.textContent="…";w.appendChild(think);w.scrollTop=w.scrollHeight;
     busy=true;
+    var langName={en:"English",zh:"Simplified Chinese (简体中文)",sv:"Swedish (svenska)"}[window.FL_LANG]||"English";
+    var sys=SYS+" Always write your reply in "+langName+" — keep the same ADHD-friendly layout (a bold headline, then up to 5 short bullets).";
     fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
       headers:{"content-type":"application/json","x-api-key":state.apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:state.model||"claude-opus-4-8",max_tokens:800,system:SYS,output_config:{effort:"low"},messages:prior.concat([{role:"user",content:buildContext()+"\n\n"+text}])})
+      body:JSON.stringify({model:state.model||"claude-opus-4-8",max_tokens:800,system:sys,output_config:{effort:"low"},messages:prior.concat([{role:"user",content:buildContext()+"\n\n"+text}])})
     }).then(function(r){return r.json();}).then(function(d){
       busy=false;
       if(d&&d.content){var t="";d.content.forEach(function(b){if(b.type==="text")t+=b.text;});pushChat("assistant",t||"(no reply)");}
-      else if(d&&d.error){pushChat("assistant","Hmm — "+((d.error.message)||"something went wrong")+(d.error.type==="authentication_error"?" (check your API key in ⚙ Settings).":""));}
-      else pushChat("assistant","Sorry, I couldn't reach the companion just now.");
-    }).catch(function(){busy=false;pushChat("assistant","Network hiccup — I couldn't reach the companion. Try again in a moment.");});
+      else if(d&&d.error){pushChat("assistant",TX("err_prefix")+((d.error.message)||TX("err_something"))+(d.error.type==="authentication_error"?TX("err_auth"):""));}
+      else pushChat("assistant",TX("err_generic"));
+    }).catch(function(){busy=false;pushChat("assistant",TX("err_network"));});
   }
   if($("chatSend"))$("chatSend").addEventListener("click",function(){var i=$("chatInput");send(i.value);i.value="";});
   if($("chatInput"))$("chatInput").addEventListener("keydown",function(e){if(e.key==="Enter"){var i=$("chatInput");send(i.value);i.value="";}});
-  var QUICK={encourage:"Give me a little encouragement for today.",patterns:"Look at my rituals, streaks and intention and tell me — kindly — what patterns you notice and what might help.",today:"Help me plan a calm, focused day around my rituals."};
-  document.querySelectorAll("[data-ask]").forEach(function(b){b.addEventListener("click",function(){send(QUICK[b.getAttribute("data-ask")]);});});
+  var QMAP={encourage:"q_send_encourage",patterns:"q_send_patterns",today:"q_send_today"};
+  document.querySelectorAll("[data-ask]").forEach(function(b){b.addEventListener("click",function(){send(TX(QMAP[b.getAttribute("data-ask")]));});});
 
   /* ---------- Petals ---------- */
   (function(){var p=$("petals");if(!p)return;var em=["🌸","🌷","🌼","💮"],h="";for(var i=0;i<12;i++){var l=Math.random()*100,d=8+Math.random()*10,dl=-Math.random()*d,sz=10+Math.random()*12;h+='<span class="petal" style="left:'+l+'%;font-size:'+sz+'px;animation-duration:'+d+'s;animation-delay:'+dl+'s">'+em[i%em.length]+'</span>';}p.innerHTML=h;})();
+
+  /* ---------- Language re-render hook ---------- */
+  window.__flRerenderCompanion=function(){updateAiPs();renderChat();renderTogether();};
 
   /* ---------- Boot ---------- */
   updateAiPs();renderChat();renderTogether();

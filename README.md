@@ -31,6 +31,7 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 - **✈️ Jet-lag reset plans** — light-timing strategy for crossing the ~7 hours in either direction.
 - **🌲 A reward forest** — every ritual or finished timer plants a tree in [`garden.html`](garden.html). Keep going and bunnies, squirrels, and the occasional fox move in. It only ever grows.
 - **💞 Two-person mode** — pair with someone you love and cheer each other on (see below).
+- **🌐 Three languages** — switch between **English · 中文 · Svenska** from the top bar (or Settings). The whole interface *and* all content — rituals, timers, markets, diet menus, tips, rebalance & jet-lag plans, dates — switch instantly, and the AI companion replies in your language. Your choice is remembered.
 - **🌸 A gentle AI companion** — encouragement and a kind read on your patterns, powered by Claude (see below).
 - **🌀 A living sakura halo** — a glowing ring ([Vanta.js HALO](https://www.vantajs.com/?effect=halo) / WebGL) drifts behind the whole dashboard, tinted to the theme (a rose halo over plum at night, a soft rose glow by day), with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
 
@@ -85,6 +86,9 @@ fresh-life-site/
 │   │   ├── app.css          # the app shell (sidebar, hero), collaboration & companion UI, modals
 │   │   └── garden.css       # self-contained styles for the forest scene
 │   └── js/
+│       ├── i18n.js          # translation engine + English UI strings
+│       ├── i18n-zh.js       # 简体中文 pack (UI + all content)
+│       ├── i18n-sv.js       # Svenska pack (UI + all content)
 │       ├── app.js           # the engine: state, storage, time helpers, and every render function
 │       ├── shell.js         # the chrome: editable name, daily intention, sidebar nav, mobile menu
 │       ├── companion.js     # two-person P2P pairing + the Claude AI companion

@@ -127,3 +127,7 @@
   .petals{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
   .petal{position:absolute; top:-26px; opacity:.7; animation:petalfall linear infinite}
   @keyframes petalfall{0%{transform:translateY(-26px) rotate(0)}100%{transform:translateY(106vh) rotate(380deg)}}
+
+  .langsel{border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); height:40px; border-radius:11px; padding:0 10px; font:inherit; font-size:.82rem; font-weight:600; cursor:pointer; transition:.15s}
+  .langsel:hover{border-color:var(--pine); color:var(--ink)}
+  .fld-sel{border:1px solid var(--line); background:var(--surface-2); border-radius:11px; padding:11px 13px; font:inherit; font-size:.95rem; color:var(--ink); cursor:pointer}

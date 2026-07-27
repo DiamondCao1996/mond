@@ -11,25 +11,25 @@
   <aside class="sidebar" id="sidebar">
     <div class="side-brand"><span class="logo">🌸</span> Fresh Life<span class="dot">.</span></div>
     <nav class="nav">
-      <a class="nav-i active" href="#routine"><span class="ic">🏠</span> Today</a>
-      <a class="nav-i" href="#companion"><span class="ic">🌸</span> Companion</a>
-      <a class="nav-i" href="#timers"><span class="ic">⏱️</span> Rituals &amp; Timers</a>
-      <a class="nav-i" href="#marketsSection"><span class="ic">📈</span> Markets</a>
-      <a class="nav-i" href="#rebalance"><span class="ic">🧭</span> Rebalance</a>
-      <a class="nav-i" href="#diet"><span class="ic">🥗</span> Diet</a>
-      <a class="nav-i" href="#tips"><span class="ic">✦</span> Insights</a>
-      <a class="nav-i" href="#jetlag"><span class="ic">✈️</span> Jet lag</a>
-      <a class="nav-i" href="garden.html"><span class="ic">🌲</span> Our Forest</a>
+      <a class="nav-i active" href="#routine"><span class="ic">🏠</span> <span data-i18n="nav_today">Today</span></a>
+      <a class="nav-i" href="#companion"><span class="ic">🌸</span> <span data-i18n="nav_companion">Companion</span></a>
+      <a class="nav-i" href="#timers"><span class="ic">⏱️</span> <span data-i18n="nav_timers">Rituals &amp; Timers</span></a>
+      <a class="nav-i" href="#marketsSection"><span class="ic">📈</span> <span data-i18n="nav_markets">Markets</span></a>
+      <a class="nav-i" href="#rebalance"><span class="ic">🧭</span> <span data-i18n="nav_rebalance">Rebalance</span></a>
+      <a class="nav-i" href="#diet"><span class="ic">🥗</span> <span data-i18n="nav_diet">Diet</span></a>
+      <a class="nav-i" href="#tips"><span class="ic">✦</span> <span data-i18n="nav_insights">Insights</span></a>
+      <a class="nav-i" href="#jetlag"><span class="ic">✈️</span> <span data-i18n="nav_jetlag">Jet lag</span></a>
+      <a class="nav-i" href="garden.html"><span class="ic">🌲</span> <span data-i18n="nav_forest">Our Forest</span></a>
     </nav>
     <button class="pair-chip" id="pairChip" type="button">
       <span class="pc-dot" id="pcDot"></span>
-      <span class="pc-txt" id="pcTxt">Just you — invite a partner</span>
+      <span class="pc-txt" id="pcTxt" data-i18n="pc_justyou">Just you — invite a partner</span>
     </button>
-    <button class="side-set" id="settingsBtn" type="button">⚙&nbsp; Settings</button>
+    <button class="side-set" id="settingsBtn" type="button" data-i18n="side_set">⚙&nbsp; Settings</button>
     <div class="side-promo">
-      <div class="sp-title">Grow it together 🌸</div>
-      <div class="sp-text">Pair up and cheer each other on. Rituals you both finish grow your shared forest.</div>
-      <a class="sp-btn" href="#companion">Pair &amp; chat →</a>
+      <div class="sp-title" data-i18n="promo_title">Grow it together 🌸</div>
+      <div class="sp-text" data-i18n="promo_text">Pair up and cheer each other on. Rituals you both finish grow your shared forest.</div>
+      <a class="sp-btn" href="#companion" data-i18n="promo_btn">Pair &amp; chat →</a>
     </div>
   </aside>
 
@@ -38,36 +38,41 @@
       <button class="iconbtn menu" id="menuBtn" aria-label="Open menu">☰</button>
       <span class="datepill" id="dateline">—</span>
       <div class="tb-spacer"></div>
+      <select id="langSel" class="langsel" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="sv">Svenska</option>
+      </select>
       <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
       <a class="iconbtn" href="garden.html" title="Your forest" aria-label="Open your reward forest">🌲</a>
     </div>
 
     <header class="hero">
       <div class="hero-main">
-        <h1>Hello, <span id="userName">friend</span> <button class="edit-name" id="editName" title="Edit your name" aria-label="Edit your name">✎</button></h1>
+        <h1><span data-i18n="hero_hello">Hello,</span> <span id="userName">friend</span> <button class="edit-name" id="editName" title="Edit your name" aria-label="Edit your name">✎</button></h1>
         <p class="greeting" id="greeting">A calm, colorful rhythm for a sharp mind — living between two time zones, one steady body.</p>
         <div class="askbar">
-          <input id="intentionInput" type="text" placeholder="What matters most today?" aria-label="Set today's intention">
-          <button class="btn primary" id="intentionBtn">＋ Set intention</button>
+          <input id="intentionInput" type="text" data-i18n-ph="intention_ph" placeholder="What matters most today?" aria-label="Set today's intention">
+          <button class="btn primary" id="intentionBtn" data-i18n="intention_btn">＋ Set intention</button>
         </div>
         <div class="intention-show" id="intentionShow"></div>
         <div class="chips">
-          <a class="chip-btn" href="#timers">⏱️ Start a focus block</a>
-          <a class="chip-btn" href="#diet">🥗 Today's plate</a>
-          <a class="chip-btn" href="garden.html">🌲 Open my forest</a>
+          <a class="chip-btn" href="#timers" data-i18n="chip_focus">⏱️ Start a focus block</a>
+          <a class="chip-btn" href="#diet" data-i18n="chip_plate">🥥 Today's plate</a>
+          <a class="chip-btn" href="garden.html" data-i18n="chip_forest">🌲 Open my forest</a>
         </div>
       </div>
 
     <div class="clocks hero-clocks" id="clocks">
       <button class="clock" data-region="china" style="--accent:var(--dawn)" aria-pressed="false">
-        <span class="badge">home base</span>
-        <div class="place">🇨🇳 China <span class="flagtag">Asia / Shanghai · CST</span></div>
+        <span class="badge" data-i18n="clock_home">home base</span>
+        <div class="place"><span data-i18n="clock_china">🇨🇳 China</span> <span class="flagtag">Asia / Shanghai · CST</span></div>
         <div class="time" data-tz="Asia/Shanghai"><span class="hm">--:--</span><span class="sec">:--</span></div>
         <div class="meta"><span data-date="Asia/Shanghai">—</span><span class="phase" data-phase="Asia/Shanghai">—</span></div>
       </button>
       <button class="clock" data-region="sweden" style="--accent:var(--sky)" aria-pressed="false">
-        <span class="badge">home base</span>
-        <div class="place">🇸🇪 Sweden <span class="flagtag">Europe / Stockholm · CET</span></div>
+        <span class="badge" data-i18n="clock_home">home base</span>
+        <div class="place"><span data-i18n="clock_sweden">🇸🇪 Sweden</span> <span class="flagtag">Europe / Stockholm · CET</span></div>
         <div class="time" data-tz="Europe/Stockholm"><span class="hm">--:--</span><span class="sec">:--</span></div>
         <div class="meta"><span data-date="Europe/Stockholm">—</span><span class="phase" data-phase="Europe/Stockholm">—</span></div>
       </button>
@@ -78,22 +83,22 @@
   <section id="routine">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">The day, gently anchored</span>
-        <h2>Today's rhythm &amp; rituals</h2>
+        <span class="eyebrow" data-i18n="routine_eyebrow">The day, gently anchored</span>
+        <h2 data-i18n="routine_h2">Today's rhythm &amp; rituals</h2>
         <p id="routineSub">Your schedule shifts with the region you're living in. Tick each ritual as you go — small, kind, repeatable.</p>
       </div>
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="panel-head"><span class="pt">My Tasks</span><span class="ps">Today</span></div>
+        <div class="panel-head"><span class="pt" data-i18n="panel_tasks">My Tasks</span><span class="ps" data-i18n="panel_today">Today</span></div>
         <div class="timeline" id="timeline"></div>
       </div>
       <div class="card">
-        <div class="panel-head"><span class="pt">My Goals</span><span class="ps tnum" id="habitCount">0 / 0</span></div>
+        <div class="panel-head"><span class="pt" data-i18n="panel_goals">My Goals</span><span class="ps tnum" id="habitCount">0 / 0</span></div>
         <div class="habits" id="habits"></div>
         <div class="habits-foot">
           <div class="progressbar"><i id="habitProg"></i></div>
-          <span class="muted" style="font-size:.8rem">Daily rituals · tick as you go</span>
+          <span class="muted" style="font-size:.8rem" data-i18n="goals_foot">Daily rituals · tick as you go</span>
         </div>
       </div>
     </div>
@@ -103,35 +108,35 @@
   <section id="companion">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">Someone in your corner</span>
-        <h2>You &amp; your companion</h2>
-        <p>Pair with someone you love and keep each other bright — and talk to a gentle AI companion for encouragement and a kind read on your patterns.</p>
+        <span class="eyebrow" data-i18n="comp_eyebrow">Someone in your corner</span>
+        <h2 data-i18n="comp_h2">You &amp; your companion</h2>
+        <p data-i18n="comp_p">Pair with someone you love and keep each other bright — and talk to a gentle AI companion for encouragement and a kind read on your patterns.</p>
       </div>
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="panel-head"><span class="pt">Together</span><span class="ps" id="togetherPs">Not paired</span></div>
+        <div class="panel-head"><span class="pt" data-i18n="tg_title">Together</span><span class="ps" id="togetherPs" data-i18n="tg_notpaired">Not paired</span></div>
         <div class="together">
           <div class="tg-empty" id="tgEmpty">
-            <p class="muted">Fresh Life is lovelier with two. Create a shared space and send your partner the code — you'll see each other's rituals, streaks, and forest, wherever you both are. Your data syncs directly between you, with no server in the middle.</p>
-            <div class="tg-actions"><button class="btn primary" id="tgPairBtn">＋ Pair with your partner</button></div>
+            <p class="muted" data-i18n="tg_empty">Fresh Life is lovelier with two. Create a shared space and send your partner the code — you'll see each other's rituals, streaks, and forest, wherever you both are. Your data syncs directly between you, with no server in the middle.</p>
+            <div class="tg-actions"><button class="btn primary" id="tgPairBtn" data-i18n="tg_pairbtn">＋ Pair with your partner</button></div>
           </div>
           <div class="tg-live" id="tgLive" hidden></div>
         </div>
       </div>
       <div class="card companion">
-        <div class="panel-head"><span class="pt">Your companion</span><span class="ps" id="aiPs">—</span></div>
+        <div class="panel-head"><span class="pt" data-i18n="comp_your">Your companion</span><span class="ps" id="aiPs">—</span></div>
         <div class="chatwrap" id="chatwrap"></div>
         <div class="quickrow">
-          <button class="chip-btn sm" data-ask="encourage">💗 Encourage me</button>
-          <button class="chip-btn sm" data-ask="patterns">🔍 Read my patterns</button>
-          <button class="chip-btn sm" data-ask="today">🌱 Plan my day</button>
+          <button class="chip-btn sm" data-ask="encourage" data-i18n="q_encourage">💗 Encourage me</button>
+          <button class="chip-btn sm" data-ask="patterns" data-i18n="q_patterns">🔍 Read my patterns</button>
+          <button class="chip-btn sm" data-ask="today" data-i18n="q_today">🌱 Plan my day</button>
         </div>
         <div class="askbar chatbar">
-          <input id="chatInput" type="text" placeholder="Tell your companion anything…" aria-label="Message your companion">
-          <button class="btn primary" id="chatSend">Send</button>
+          <input id="chatInput" type="text" data-i18n-ph="chat_ph" placeholder="Tell your companion anything…" aria-label="Message your companion">
+          <button class="btn primary" id="chatSend" data-i18n="chat_send">Send</button>
         </div>
-        <div class="disclaimer">A caring AI, not a medical professional. In a crisis, please contact local emergency services or a helpline.</div>
+        <div class="disclaimer" data-i18n="disclaimer">A caring AI, not a medical professional. In a crisis, please contact local emergency services or a helpline.</div>
       </div>
     </div>
   </section>
@@ -140,9 +145,9 @@
   <section id="timers">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">15 minutes is enough</span>
-        <h2>Move, breathe, glow</h2>
-        <p>Pick a ritual and press start. Short and consistent beats long and rare — every one of these fits in a coffee break.</p>
+        <span class="eyebrow" data-i18n="tm_eyebrow">15 minutes is enough</span>
+        <h2 data-i18n="tm_h2">Move, breathe, glow</h2>
+        <p data-i18n="tm_p">Pick a ritual and press start. Short and consistent beats long and rare — every one of these fits in a coffee break.</p>
       </div>
     </div>
     <div class="timer-wrap">
@@ -158,8 +163,8 @@
           </div>
         </div>
         <div class="actions">
-          <button class="btn primary" id="tStart">Start</button>
-          <button class="btn ghost" id="tReset">Reset</button>
+          <button class="btn primary" id="tStart" data-i18n="t_start">Start</button>
+          <button class="btn ghost" id="tReset" data-i18n="t_reset">Reset</button>
         </div>
       </div>
       <div class="card">
@@ -173,15 +178,15 @@
   <section id="marketsSection">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">The trader's clock</span>
-        <h2>Markets, in your two local times</h2>
-        <p>Live open / closed status, with each session translated into China and Sweden wall-clock time so you always know when to sit down — and when to sleep instead.</p>
+        <span class="eyebrow" data-i18n="mk_eyebrow">The trader's clock</span>
+        <h2 data-i18n="mk_h2">Markets, in your two local times</h2>
+        <p data-i18n="mk_p">Live open / closed status, with each session translated into China and Sweden wall-clock time so you always know when to sit down — and when to sleep instead.</p>
       </div>
     </div>
     <div class="market-grid" id="markets"></div>
     <div class="card focusnote">
-      <div class="k">Focus</div>
-      <div class="muted">
+      <div class="k" data-i18n="focus_k">Focus</div>
+      <div class="muted" data-i18n-html="focus_body">
         Guard your morning for deep research — mind is freshest before the US bell. Run one or two <b>50 / 10 focus blocks</b> (start a timer above), then trade. Because the US session lands late in both your zones, treat a late night as a loan: repay it the next morning with 10 minutes of outdoor light and an earlier wind-down.
       </div>
     </div>
@@ -191,9 +196,9 @@
   <section id="rebalance">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">When the day goes sideways</span>
-        <h2>Interruption rebalance</h2>
-        <p>Life happens — a lost night, a late heavy dinner, a midnight trade. Pick what threw you off and get a calm, science-based way back. No guilt, just the next right move.</p>
+        <span class="eyebrow" data-i18n="rb_eyebrow">When the day goes sideways</span>
+        <h2 data-i18n="rb_h2">Interruption rebalance</h2>
+        <p data-i18n="rb_p">Life happens — a lost night, a late heavy dinner, a midnight trade. Pick what threw you off and get a calm, science-based way back. No guilt, just the next right move.</p>
       </div>
     </div>
     <div class="card jet">
@@ -208,9 +213,9 @@
   <section id="diet">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">Eat to lose, eat to glow</span>
-        <h2>Today's plate — lighter, brighter</h2>
-        <p>A rotating weight-loss menu that blends Chinese and Nordic kitchens: protein and fiber first, lots of color, gentle portions — never bland.</p>
+        <span class="eyebrow" data-i18n="dt_eyebrow">Eat to lose, eat to glow</span>
+        <h2 data-i18n="dt_h2">Today's plate — lighter, brighter</h2>
+        <p data-i18n="dt_p">A rotating weight-loss menu that blends Chinese and Nordic kitchens: protein and fiber first, lots of color, gentle portions — never bland.</p>
       </div>
     </div>
     <div class="card diet">
@@ -220,11 +225,11 @@
       </div>
       <div class="meals" id="meals"></div>
       <div class="diet-foot">
-        <span class="chip">Protein + fiber first</span>
-        <span class="chip">~1500–1700 kcal</span>
-        <span class="chip">Eat within daylight</span>
-        <span class="chip">Hydrate: 2L + green tea</span>
-        <span class="muted" style="flex:1; min-width:200px">Swap freely — the goal is a colorful, satisfying plate you'll actually keep.</span>
+        <span class="chip" data-i18n="chip_pf">Protein + fiber first</span>
+        <span class="chip" data-i18n="chip_kcal">~1500–1700 kcal</span>
+        <span class="chip" data-i18n="chip_daylight">Eat within daylight</span>
+        <span class="chip" data-i18n="chip_hydrate">Hydrate: 2L + green tea</span>
+        <span class="muted" style="flex:1; min-width:200px" data-i18n="diet_swap">Swap freely — the goal is a colorful, satisfying plate you'll actually keep.</span>
       </div>
     </div>
   </section>
@@ -233,9 +238,9 @@
   <section id="tips">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">Science, met by old wisdom</span>
-        <h2>Why the rhythm works</h2>
-        <p>Each card pairs a well-established finding with a living practice from your two homes.</p>
+        <span class="eyebrow" data-i18n="tp_eyebrow">Science, met by old wisdom</span>
+        <h2 data-i18n="tp_h2">Why the rhythm works</h2>
+        <p data-i18n="tp_p">Each card pairs a well-established finding with a living practice from your two homes.</p>
       </div>
     </div>
     <div class="tips-grid" id="tips"></div>
@@ -245,15 +250,15 @@
   <section id="jetlag">
     <div class="sec-head">
       <div>
-        <span class="eyebrow">Crossing seven hours</span>
-        <h2>Jet-lag reset plan</h2>
-        <p>China and Sweden sit ~6–7 hours apart. Light is your strongest lever — here's how to aim it.</p>
+        <span class="eyebrow" data-i18n="jl_eyebrow">Crossing seven hours</span>
+        <h2 data-i18n="jl_h2">Jet-lag reset plan</h2>
+        <p data-i18n="jl_p">China and Sweden sit ~6–7 hours apart. Light is your strongest lever — here's how to aim it.</p>
       </div>
     </div>
     <div class="card jet">
       <div class="jet-switch" id="jetSwitch">
-        <button data-dir="toSweden" class="sel">China → Sweden (going west)</button>
-        <button data-dir="toChina">Sweden → China (going east)</button>
+        <button data-dir="toSweden" class="sel" data-i18n="jet_toSweden">China → Sweden (going west)</button>
+        <button data-dir="toChina" data-i18n="jet_toChina">Sweden → China (going east)</button>
       </div>
       <p class="jet-intro" id="jetIntro">—</p>
       <div class="jet-days" id="jetDays"></div>
@@ -261,8 +266,8 @@
   </section>
 
   <footer>
-    <div>Made with <span class="heart">♥</span> for a fresh, healthy, focused life. Your progress is saved privately in this browser.</div>
-    <div style="margin-top:6px">General wellness guidance grounded in circadian, nutrition &amp; exercise research — not personalized medical advice. &nbsp;·&nbsp; <button class="reset-link" id="clearAll">Reset today's data</button></div>
+    <div data-i18n="foot_1">Made with ♥ for a fresh, healthy, focused life. Your progress is saved privately in this browser.</div>
+    <div style="margin-top:6px"><span data-i18n="foot_2">General wellness guidance grounded in circadian, nutrition &amp; exercise research — not personalized medical advice.</span> &nbsp;·&nbsp; <button class="reset-link" id="clearAll" data-i18n="foot_reset">Reset today's data</button></div>
   </footer>
   </main>
 </div>
@@ -272,20 +277,20 @@
 <div class="modal-back" id="pairModal" hidden>
   <div class="modal">
     <button class="modal-x" data-close aria-label="Close">✕</button>
-    <h3>Pair with your partner 🌸</h3>
-    <p class="muted tiny">Two devices, one rhythm. Create a space and share the code, or enter a code you were given. Your data stays between the two of you — nothing is stored on a server.</p>
+    <h3 data-i18n="pm_title">Pair with your partner 🌸</h3>
+    <p class="muted tiny" data-i18n="pm_intro">Two devices, one rhythm. Create a space and share the code, or enter a code you were given. Your data stays between the two of you — nothing is stored on a server.</p>
     <div class="modal-body">
-      <label class="fld"><span>Your name</span><input id="pmName" placeholder="You"></label>
+      <label class="fld"><span data-i18n="pm_yourname">Your name</span><input id="pmName" placeholder="You"></label>
       <div>
         <div class="pm-code" id="pmCode">— — — — — —</div>
         <div class="row">
-          <button class="btn primary" id="pmCreate">Create shared space</button>
-          <button class="btn ghost" id="pmCopy" hidden>Copy code</button>
+          <button class="btn primary" id="pmCreate" data-i18n="pm_create">Create shared space</button>
+          <button class="btn ghost" id="pmCopy" hidden data-i18n="pm_copy">Copy code</button>
         </div>
       </div>
-      <div class="pm-or">— or —</div>
-      <label class="fld"><span>Partner's code</span><input id="pmJoin" placeholder="e.g. SAKURA" autocapitalize="characters"></label>
-      <button class="btn" id="pmJoinBtn">Join their space</button>
+      <div class="pm-or" data-i18n="pm_or">— or —</div>
+      <label class="fld"><span data-i18n="pm_partnercode">Partner's code</span><input id="pmJoin" placeholder="e.g. SAKURA" autocapitalize="characters"></label>
+      <button class="btn" id="pmJoinBtn" data-i18n="pm_join">Join their space</button>
       <div class="pm-status" id="pmStatus"></div>
     </div>
   </div>
@@ -294,18 +299,29 @@
 <div class="modal-back" id="setModal" hidden>
   <div class="modal">
     <button class="modal-x" data-close aria-label="Close">✕</button>
-    <h3>Settings ⚙</h3>
+    <h3 data-i18n="set_title">Settings ⚙</h3>
     <div class="modal-body">
-      <label class="fld"><span>Your name</span><input id="setName" placeholder="friend"></label>
-      <label class="fld"><span>Companion — Claude API key</span><input id="setKey" type="password" placeholder="sk-ant-..."></label>
-      <p class="muted tiny">Stored only in this browser — never uploaded to us or shared with your partner. Get a key at console.anthropic.com. The companion uses Claude Opus 4.8 by default.</p>
-      <label class="fld"><span>Model</span><input id="setModel" placeholder="claude-opus-4-8"></label>
-      <div class="row"><button class="btn primary" id="setSave">Save</button><button class="btn ghost" id="setClear">Clear chat &amp; key</button></div>
+      <label class="fld"><span data-i18n="set_lang">Language</span>
+        <select id="langSel2" class="fld-sel">
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+          <option value="sv">Svenska</option>
+        </select>
+      </label>
+      <label class="fld"><span data-i18n="set_name">Your name</span><input id="setName" placeholder="friend"></label>
+      <label class="fld"><span data-i18n="set_key">Companion — Claude API key</span><input id="setKey" type="password" placeholder="sk-ant-..."></label>
+      <p class="muted tiny" data-i18n="set_keynote">Stored only in this browser — never uploaded to us or shared with your partner. Get a key at console.anthropic.com. The companion uses Claude Opus 4.8 by default.</p>
+      <label class="fld"><span data-i18n="set_model">Model</span><input id="setModel" placeholder="claude-opus-4-8"></label>
+      <div class="row"><button class="btn primary" id="setSave" data-i18n="set_save">Save</button><button class="btn ghost" id="setClear" data-i18n="set_clear">Clear chat &amp; key</button></div>
     </div>
   </div>
 </div>
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/i18n-zh.js"></script>
+<script src="assets/js/i18n-sv.js"></script>
 
 <script src="assets/js/app.js"></script>
 
