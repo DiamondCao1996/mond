@@ -58,7 +58,7 @@ Fresh Life is lovelier with two.
 
 You then sync **directly, device-to-device, over the internet** — a live *Together* card shows both people's rituals, streaks, and forest, wherever you both are.
 
-> **Privacy by design:** collaboration is peer-to-peer over WebRTC ([PeerJS](https://peerjs.com/)). Your progress travels straight between the two browsers — **nothing is stored on a server**. Both of you need to be online at the same time to sync live; the connection reconnects on its own.
+> **How it syncs:** the two browsers exchange live updates through a shared **public MQTT-over-WebSocket relay** (a plain outbound `wss://` connection that works through NAT and firewalls — far more reliable than raw WebRTC). Messages **pass through in transit and aren't stored anywhere**; your progress lives in each browser's `localStorage`. Both of you need to be online at the same time to sync live; it reconnects on its own.
 
 ## 🌸 The AI companion
 
@@ -122,13 +122,13 @@ python3 -m http.server 8000    # then visit http://localhost:8000
 ## 🔒 Privacy & data
 
 - All your progress is stored **locally in your browser** (`localStorage`), never on a server.
-- Collaboration is **peer-to-peer**; your data flows only between the two paired devices.
+- Collaboration relays live updates through a shared **public MQTT broker**; messages pass through in transit and aren't stored — your data lives in each browser.
 - The Claude API key you enter stays in your browser and is sent only to Anthropic's API on the requests you trigger.
 - **Reset today's data** any time from the footer.
 
 ## 🧰 Built with
 
-Vanilla JS · CSS custom properties · `Intl` for timezones · [Vanta.js](https://www.vantajs.com/) + [three.js](https://threejs.org/) for the animated background · [PeerJS](https://peerjs.com/) (WebRTC) for pairing · [Claude API](https://docs.claude.com/) for the companion · Web Audio for the timer chime. No frameworks, no build step.
+Vanilla JS · CSS custom properties · `Intl` for timezones · [Vanta.js](https://www.vantajs.com/) + [three.js](https://threejs.org/) for the animated background · [MQTT.js](https://github.com/mqttjs/MQTT.js) over a public WebSocket broker for pairing · [Claude API](https://docs.claude.com/) for the companion · Web Audio for the timer chime. No frameworks, no build step.
 
 ## 📝 Note
 

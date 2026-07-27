@@ -15,8 +15,12 @@
   function mySnap(){return {name:(state.name||TX("name_friend")),done:myDone(),total:totalHabits(),streak:myStreakMax(),rewards:(state.rewardsEarned||0),region:state.region,intention:(state.intention&&state.intentionDate===today())?state.intention:""};}
   function setName(n){state.name=n;save();var u=$("userName");if(u)u.textContent=n;}
 
-  /* ---------- Collaboration (PeerJS, room-code pairing) ---------- */
-  var P={peer:null,conn:null,online:false,partner:null,retry:0};
+  /* ---------- Collaboration (public MQTT broker, room-code pairing) ---------- */
+  // Pairing goes through a public MQTT-over-WebSocket broker: a plain outbound
+  // WSS connection that works through NAT and firewalls everywhere — far more
+  // reliable than raw WebRTC, which needs a TURN relay to cross many networks.
+  var BROKER="wss://broker.emqx.io:8084/mqtt";
+  var P={client:null,connected:false,online:false,partner:null,me:null,topic:null,lastRx:0};
   function setChip(){
     var chip=$("pairChip"),txt=$("pcTxt");if(!chip)return;
     chip.classList.toggle("online",P.online);
@@ -44,43 +48,34 @@
     html+='<div class="tg-note">'+TX("tg_synced")+'</div>';
     live.innerHTML=html;setChip();
   }
-  function broadcast(){if(P.conn&&P.conn.open){try{P.conn.send({t:"snap",snap:mySnap()});}catch(e){}}}
-  function onData(msg){if(!msg||msg.t!=="snap")return;P.partner=msg.snap;if(msg.snap&&msg.snap.name){state.partnerName=msg.snap.name;save();}renderTogether();}
-  function wireConn(conn){
-    P.conn=conn;
-    conn.on("open",function(){P.online=true;P.retry=0;broadcast();renderTogether();status(TX("pm_status_conn"));});
-    conn.on("data",onData);
-    conn.on("close",function(){P.online=false;renderTogether();});
-    conn.on("error",function(){P.online=false;renderTogether();});
+  function pub(){if(P.client&&P.connected&&P.topic){try{P.client.publish(P.topic,JSON.stringify({from:P.me,snap:mySnap()}));}catch(e){}}}
+  function broadcast(){pub();}
+  function onMsg(payload){
+    var d;try{d=JSON.parse(payload.toString());}catch(e){return;}
+    if(!d||!d.from||d.from===P.me)return;               // ignore our own echo
+    if(d.snap){P.partner=d.snap;if(d.snap.name){state.partnerName=d.snap.name;save();}}
+    P.lastRx=Date.now();
+    var was=P.online;P.online=true;
+    if(!was)pub();                                       // greet back so the partner sees us immediately
+    status(TX("pm_status_conn"));renderTogether();
   }
   function status(t){var s=$("pmStatus");if(s)s.textContent=t;}
-  function host(code){
-    if(!window.Peer){status(TX("pm_status_nolib"));return;}
-    try{P.peer=new Peer("fl-"+code);}catch(e){status(TX("pm_status_nolib"));return;}
-    P.peer.on("open",function(){status(TP("pm_status_ready",{code:code}));});
-    P.peer.on("connection",wireConn);
-    P.peer.on("error",function(err){
-      if(err&&err.type==="unavailable-id"){var c=genCode();state.pair={code:c,role:"host"};save();if($("pmCode"))$("pmCode").textContent=c.split("").join(" ");if($("pairModal"))$("pairModal").dataset.code=c;host(c);}
-      else status(TP("pm_status_issue",{t:((err&&err.type)||"unknown")}));
-    });
+  function teardown(){try{P.client&&P.client.end(true);}catch(e){}P.client=null;P.connected=false;P.online=false;P.partner=null;}
+  function connect(code){
+    if(!window.mqtt){status(TX("pm_status_nolib"));return;}
+    teardown();
+    P.me="fl"+Math.random().toString(36).slice(2,10)+(Date.now()%100000);
+    P.topic="freshlife/room/"+code;
+    var isHost=!!(state.pair&&state.pair.role==="host");
+    status(isHost?TP("pm_status_ready",{code:code}):TX("pm_status_relay"));
+    try{P.client=mqtt.connect(BROKER,{clientId:("fl_"+P.me).slice(0,22),reconnectPeriod:3000,connectTimeout:9000,clean:true});}
+    catch(e){status(TX("pm_status_nolib"));return;}
+    P.client.on("connect",function(){P.connected=true;P.client.subscribe(P.topic,function(){});pub();renderTogether();});
+    P.client.on("message",function(t,m){onMsg(m);});
+    P.client.on("close",function(){P.connected=false;P.online=false;renderTogether();});
+    P.client.on("error",function(){status(TX("pm_status_failed"));});
   }
-  function join(code){
-    if(!window.Peer){status(TX("pm_status_nolib"));return;}
-    try{P.peer=new Peer();}catch(e){status(TX("pm_status_nolib"));return;}
-    P.peer.on("open",function(){status(TP("pm_status_look",{code:code}));wireConn(P.peer.connect("fl-"+code,{reliable:true}));});
-    P.peer.on("error",function(err){
-      P.online=false;
-      if(err&&err.type==="peer-unavailable"){status(TX("pm_status_wait"));P.retry++;if(P.retry<60&&state.pair){setTimeout(function(){try{P.peer&&P.peer.destroy();}catch(e){}join(code);},5000);}}
-      else status(TP("pm_status_issue",{t:((err&&err.type)||"unknown")}));
-      renderTogether();
-    });
-  }
-  function startPair(){
-    if(!state.pair||!state.pair.code)return;
-    try{P.peer&&P.peer.destroy();}catch(e){}
-    P.peer=null;P.conn=null;P.online=false;
-    if(state.pair.role==="host")host(state.pair.code);else join(state.pair.code);
-  }
+  function startPair(){ if(state.pair&&state.pair.code)connect(state.pair.code); }
   var CODEC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   function genCode(){var s="";for(var i=0;i<6;i++)s+=CODEC.charAt(Math.floor(Math.random()*CODEC.length));return s;}
 
@@ -181,5 +176,8 @@
   /* ---------- Boot ---------- */
   updateAiPs();renderChat();renderTogether();
   if(state.pair&&state.pair.code)startPair();
-  setInterval(function(){if(P.conn&&P.conn.open)broadcast();},3000);
+  setInterval(function(){
+    broadcast();
+    if(P.online&&Date.now()-P.lastRx>18000){P.online=false;renderTogether();}  // partner went quiet
+  },3000);
 })();
