@@ -251,6 +251,39 @@
   .reset-link{background:none; border:0; color:var(--ink-faint); text-decoration:underline; cursor:pointer; font-size:.8rem; font-family:var(--sans)}
   :focus-visible{outline:2.5px solid var(--pine); outline-offset:2px; border-radius:6px}
 
+  /* ============ Sakura retheme (overrides the tokens above) ============ */
+  :root, :root[data-theme="light"]{
+    --bg:#FFF5F8; --bg-grad:#FFE6EE;
+    --surface:#FFFCFD; --surface-2:#FDEEF3;
+    --ink:#3E2733; --ink-soft:#7C5C68; --ink-faint:#AE8C97;
+    --line:#F5D6E0; --line-soft:#FBE8EE;
+    --pine:#E0679A; --pine-deep:#C24E82;
+    --dawn:#F2938E; --dawn-soft:#FCE0DC;
+    --sky:#A98BD6; --sky-soft:#EDE4F7;
+    --good:#4FBE9B; --warn:#D99A3C; --crit:#D96A7A;
+    --shadow:0 1px 2px rgba(120,40,70,.06), 0 10px 30px -14px rgba(190,70,120,.26);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#1A1015; --bg-grad:#20141B;
+      --surface:#241820; --surface-2:#2E1F28;
+      --ink:#F6E7EE; --ink-soft:#C9A9B7; --ink-faint:#9A7C89;
+      --line:#3A2833; --line-soft:#31212B;
+      --pine:#F090B4; --pine-deep:#F6B3CC;
+      --dawn:#F5A6A0; --dawn-soft:#3E2229;
+      --sky:#C3A9E8; --sky-soft:#2A2036;
+      --good:#5FCDA9; --warn:#E4B36A; --crit:#EE8A98;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1A1015; --bg-grad:#20141B; --surface:#241820; --surface-2:#2E1F28;
+    --ink:#F6E7EE; --ink-soft:#C9A9B7; --ink-faint:#9A7C89; --line:#3A2833; --line-soft:#31212B;
+    --pine:#F090B4; --pine-deep:#F6B3CC; --dawn:#F5A6A0; --dawn-soft:#3E2229;
+    --sky:#C3A9E8; --sky-soft:#2A2036; --good:#5FCDA9; --warn:#E4B36A; --crit:#EE8A98;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -16px rgba(0,0,0,.65);
+  }
+
   /* ============ App shell (sidebar + main, prodify-style layout) ============ */
   html{scroll-behavior:smooth}
   .card,.clock{border-radius:18px}
@@ -317,25 +350,86 @@
     .sidebar.open{transform:none}
     .scrim.on{opacity:1; pointer-events:auto}
   }
+
+  /* ============ Collaboration + companion + modals ============ */
+  .app{position:relative; z-index:2}
+  .pair-chip{display:flex; align-items:center; gap:9px; width:100%; text-align:left; margin-top:10px; padding:10px 12px; border-radius:11px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font:inherit; font-weight:600; font-size:.83rem; cursor:pointer; transition:.15s}
+  .pair-chip:hover{border-color:var(--pine); color:var(--ink)}
+  .pc-dot{width:9px; height:9px; border-radius:50%; background:var(--ink-faint); flex:0 0 auto; transition:.2s}
+  .pair-chip.online .pc-dot{background:var(--good); box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%, transparent)}
+  .side-set{width:100%; text-align:left; margin-top:6px; padding:9px 12px; border-radius:11px; border:1px solid transparent; background:transparent; color:var(--ink-soft); font:inherit; font-weight:600; font-size:.83rem; cursor:pointer; transition:.15s}
+  .side-set:hover{background:var(--surface-2); color:var(--ink)}
+
+  .companion{display:flex; flex-direction:column}
+  .chatwrap{padding:14px 16px; display:flex; flex-direction:column; gap:10px; max-height:360px; overflow-y:auto; min-height:130px}
+  .bubble{max-width:86%; padding:10px 13px; border-radius:15px; font-size:.9rem; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:anywhere}
+  .bubble.me{align-self:flex-end; background:var(--pine); color:#fff; border-bottom-right-radius:5px}
+  .bubble.ai{align-self:flex-start; background:var(--surface-2); color:var(--ink); border-bottom-left-radius:5px}
+  .bubble.ai.think{color:var(--ink-faint); font-style:italic}
+  .chat-hint{color:var(--ink-faint); font-size:.88rem; text-align:center; padding:20px 10px; line-height:1.5}
+  .quickrow{display:flex; gap:8px; flex-wrap:wrap; padding:6px 16px 0}
+  .chip-btn.sm{padding:7px 12px; font-size:.8rem; box-shadow:none}
+  .chatbar{margin:12px 16px 6px; max-width:none}
+  .disclaimer{font-size:.72rem; color:var(--ink-faint); padding:2px 16px 14px; line-height:1.4}
+
+  .together{padding:16px}
+  .tg-empty .tg-actions{margin-top:14px}
+  .tg-live{display:grid; gap:12px}
+  .tg-person{display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:15px; background:var(--surface-2)}
+  .tg-person .av{width:44px; height:44px; border-radius:50%; display:grid; place-items:center; font-weight:700; color:#fff; font-size:1.1rem; background:linear-gradient(140deg,var(--pine),var(--dawn)); flex:0 0 auto}
+  .tg-person.partner .av{background:linear-gradient(140deg,var(--sky),var(--pine))}
+  .tg-person .info{flex:1; min-width:0}
+  .tg-person .nm{font-weight:700; font-size:.94rem; display:flex; align-items:center; gap:8px; font-family:var(--serif)}
+  .tg-person .nm .st{font-size:.62rem; font-weight:700; color:var(--good); text-transform:uppercase; letter-spacing:.1em}
+  .tg-person .nm .st.off{color:var(--ink-faint)}
+  .tg-person .bars{margin-top:5px; font-size:.8rem; color:var(--ink-soft); display:flex; gap:12px; flex-wrap:wrap}
+  .tg-person .bars b{color:var(--pine); font-family:var(--mono); font-weight:700}
+  .tg-note{font-size:.82rem; color:var(--ink-soft); text-align:center; padding:2px 4px}
+
+  .modal-back{position:fixed; inset:0; background:rgba(40,15,30,.5); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:20px; z-index:60}
+  .modal-back[hidden]{display:none}
+  .modal{background:var(--surface); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); width:100%; max-width:440px; padding:24px; position:relative; max-height:90vh; overflow-y:auto}
+  .modal h3{font-size:1.35rem; margin-bottom:6px}
+  .modal .modal-x{position:absolute; top:14px; right:14px; border:0; background:var(--surface-2); width:32px; height:32px; border-radius:9px; cursor:pointer; color:var(--ink-soft); font-size:.9rem}
+  .modal .modal-x:hover{color:var(--ink)}
+  .modal-body{margin-top:16px; display:flex; flex-direction:column; gap:12px}
+  .fld{display:flex; flex-direction:column; gap:5px; font-size:.82rem; font-weight:600; color:var(--ink-soft)}
+  .fld input{border:1px solid var(--line); background:var(--surface-2); border-radius:11px; padding:11px 13px; font:inherit; font-size:.95rem; color:var(--ink); outline:none}
+  .fld input:focus{border-color:var(--pine)}
+  .pm-code{font-family:var(--mono); font-size:1.7rem; font-weight:700; letter-spacing:.24em; text-align:center; color:var(--pine); background:var(--surface-2); border-radius:12px; padding:14px; margin-bottom:10px}
+  .pm-or{text-align:center; color:var(--ink-faint); font-size:.8rem; margin:2px 0}
+  .pm-status{font-size:.85rem; color:var(--ink-soft); min-height:20px}
+  .modal .row{display:flex; gap:8px; flex-wrap:wrap}
+  .tiny{font-size:.75rem; line-height:1.45}
+
+  .petals{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+  .petal{position:absolute; top:-26px; opacity:.7; animation:petalfall linear infinite}
+  @keyframes petalfall{0%{transform:translateY(-26px) rotate(0)}100%{transform:translateY(106vh) rotate(380deg)}}
 </style>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <div class="side-brand"><span class="logo">🌿</span> Fresh Life<span class="dot">.</span></div>
+    <div class="side-brand"><span class="logo">🌸</span> Fresh Life<span class="dot">.</span></div>
     <nav class="nav">
       <a class="nav-i active" href="#routine"><span class="ic">🏠</span> Today</a>
+      <a class="nav-i" href="#companion"><span class="ic">🌸</span> Companion</a>
       <a class="nav-i" href="#timers"><span class="ic">⏱️</span> Rituals &amp; Timers</a>
       <a class="nav-i" href="#marketsSection"><span class="ic">📈</span> Markets</a>
       <a class="nav-i" href="#rebalance"><span class="ic">🧭</span> Rebalance</a>
       <a class="nav-i" href="#diet"><span class="ic">🥗</span> Diet</a>
       <a class="nav-i" href="#tips"><span class="ic">✦</span> Insights</a>
       <a class="nav-i" href="#jetlag"><span class="ic">✈️</span> Jet lag</a>
-      <a class="nav-i" href="garden.html"><span class="ic">🌲</span> My Forest</a>
+      <a class="nav-i" href="garden.html"><span class="ic">🌲</span> Our Forest</a>
     </nav>
+    <button class="pair-chip" id="pairChip" type="button">
+      <span class="pc-dot" id="pcDot"></span>
+      <span class="pc-txt" id="pcTxt">Just you — invite a partner</span>
+    </button>
+    <button class="side-set" id="settingsBtn" type="button">⚙&nbsp; Settings</button>
     <div class="side-promo">
-      <div class="sp-title">Your forest is growing</div>
-      <div class="sp-text">Every ritual you finish plants a tree. Bunnies &amp; squirrels follow.</div>
-      <a class="sp-btn" href="garden.html">Visit forest →</a>
+      <div class="sp-title">Grow it together 🌸</div>
+      <div class="sp-text">Pair up and cheer each other on. Rituals you both finish grow your shared forest.</div>
+      <a class="sp-btn" href="#companion">Pair &amp; chat →</a>
     </div>
   </aside>
 
@@ -401,6 +495,43 @@
           <div class="progressbar"><i id="habitProg"></i></div>
           <span class="muted" style="font-size:.8rem">Daily rituals · tick as you go</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Companion (pairing + AI) ===== -->
+  <section id="companion">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Someone in your corner</span>
+        <h2>You &amp; your companion</h2>
+        <p>Pair with someone you love and keep each other bright — and talk to a gentle AI companion for encouragement and a kind read on your patterns.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="panel-head"><span class="pt">Together</span><span class="ps" id="togetherPs">Not paired</span></div>
+        <div class="together">
+          <div class="tg-empty" id="tgEmpty">
+            <p class="muted">Fresh Life is lovelier with two. Create a shared space and send your partner the code — you'll see each other's rituals, streaks, and forest, wherever you both are. Your data syncs directly between you, with no server in the middle.</p>
+            <div class="tg-actions"><button class="btn primary" id="tgPairBtn">＋ Pair with your partner</button></div>
+          </div>
+          <div class="tg-live" id="tgLive" hidden></div>
+        </div>
+      </div>
+      <div class="card companion">
+        <div class="panel-head"><span class="pt">Your companion</span><span class="ps" id="aiPs">—</span></div>
+        <div class="chatwrap" id="chatwrap"></div>
+        <div class="quickrow">
+          <button class="chip-btn sm" data-ask="encourage">💗 Encourage me</button>
+          <button class="chip-btn sm" data-ask="patterns">🔍 Read my patterns</button>
+          <button class="chip-btn sm" data-ask="today">🌱 Plan my day</button>
+        </div>
+        <div class="askbar chatbar">
+          <input id="chatInput" type="text" placeholder="Tell your companion anything…" aria-label="Message your companion">
+          <button class="btn primary" id="chatSend">Send</button>
+        </div>
+        <div class="disclaimer">A caring AI, not a medical professional. In a crisis, please contact local emergency services or a helpline.</div>
       </div>
     </div>
   </section>
@@ -536,6 +667,45 @@
   </main>
 </div>
 <div class="scrim" id="scrim"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+
+<div class="modal-back" id="pairModal" hidden>
+  <div class="modal">
+    <button class="modal-x" data-close aria-label="Close">✕</button>
+    <h3>Pair with your partner 🌸</h3>
+    <p class="muted tiny">Two devices, one rhythm. Create a space and share the code, or enter a code you were given. Your data stays between the two of you — nothing is stored on a server.</p>
+    <div class="modal-body">
+      <label class="fld"><span>Your name</span><input id="pmName" placeholder="You"></label>
+      <div>
+        <div class="pm-code" id="pmCode">— — — — — —</div>
+        <div class="row">
+          <button class="btn primary" id="pmCreate">Create shared space</button>
+          <button class="btn ghost" id="pmCopy" hidden>Copy code</button>
+        </div>
+      </div>
+      <div class="pm-or">— or —</div>
+      <label class="fld"><span>Partner's code</span><input id="pmJoin" placeholder="e.g. SAKURA" autocapitalize="characters"></label>
+      <button class="btn" id="pmJoinBtn">Join their space</button>
+      <div class="pm-status" id="pmStatus"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="setModal" hidden>
+  <div class="modal">
+    <button class="modal-x" data-close aria-label="Close">✕</button>
+    <h3>Settings ⚙</h3>
+    <div class="modal-body">
+      <label class="fld"><span>Your name</span><input id="setName" placeholder="friend"></label>
+      <label class="fld"><span>Companion — Claude API key</span><input id="setKey" type="password" placeholder="sk-ant-..."></label>
+      <p class="muted tiny">Stored only in this browser — never uploaded to us or shared with your partner. Get a key at console.anthropic.com. The companion uses Claude Opus 4.8 by default.</p>
+      <label class="fld"><span>Model</span><input id="setModel" placeholder="claude-opus-4-8"></label>
+      <div class="row"><button class="btn primary" id="setSave">Save</button><button class="btn ghost" id="setClear">Clear chat &amp; key</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <script>
 "use strict";
@@ -1113,5 +1283,169 @@ setInterval(function(){renderMarkets();renderTimeline();},30000);
     },{rootMargin:"-42% 0px -52% 0px"});
     ids.forEach(function(id){obs.observe(document.getElementById(id));});
   }
+})();
+</script>
+
+<script>
+"use strict";
+/* ============ Companion: two-person pairing (P2P) + AI advisor ============ */
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function today(){try{return todayStr();}catch(e){return "";}}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function totalHabits(){return (window.HABITS&&HABITS.length)||10;}
+  function myDone(){var n=0,h=state.habits||{};for(var k in h)if(h[k])n++;return n;}
+  function myStreakMax(){var m=0,s=state.streaks||{};for(var k in s)if(s[k]>m)m=s[k];return m;}
+  function mySnap(){return {name:(state.name||"friend"),done:myDone(),total:totalHabits(),streak:myStreakMax(),rewards:(state.rewardsEarned||0),region:state.region,intention:(state.intention&&state.intentionDate===today())?state.intention:""};}
+  function setName(n){state.name=n;save();var u=$("userName");if(u)u.textContent=n;}
+
+  /* ---------- Collaboration (PeerJS, room-code pairing) ---------- */
+  var P={peer:null,conn:null,online:false,partner:null,retry:0};
+  function setChip(){
+    var chip=$("pairChip"),txt=$("pcTxt");if(!chip)return;
+    chip.classList.toggle("online",P.online);
+    if(P.online)txt.textContent=(state.partnerName||"Partner")+" · online";
+    else if(state.pair&&state.pair.code)txt.textContent="Paired ("+state.pair.code+") · offline";
+    else txt.textContent="Just you — invite a partner";
+  }
+  function person(s,cls,online){
+    var init=((s.name||"?").trim().charAt(0)||"?").toUpperCase();
+    var st=online?'<span class="st">online</span>':'<span class="st off">offline</span>';
+    return '<div class="tg-person '+cls+'"><div class="av">'+esc(init)+'</div><div class="info">'+
+      '<div class="nm">'+esc(s.name||"Someone")+' '+st+'</div>'+
+      '<div class="bars">🌱 rituals <b>'+s.done+'/'+s.total+'</b> · 🔥 streak <b>'+s.streak+'</b> · 🌸 forest <b>'+s.rewards+'</b></div>'+
+      (s.intention?'<div class="bars">✨ '+esc(s.intention)+'</div>':'')+'</div></div>';
+  }
+  function renderTogether(){
+    var ps=$("togetherPs"),empty=$("tgEmpty"),live=$("tgLive");if(!ps)return;
+    var paired=!!(state.pair&&state.pair.code);
+    if(!paired){ps.textContent="Not paired";empty.hidden=false;live.hidden=true;setChip();return;}
+    empty.hidden=true;live.hidden=false;
+    ps.textContent=P.online?"Connected 🌸":"Waiting for partner…";
+    var html=person(mySnap(),"me",true);
+    if(P.partner)html+=person(P.partner,"partner",P.online);
+    else html+='<div class="tg-note">Waiting for '+esc(state.partnerName||"your partner")+' to open Fresh Life…</div>';
+    html+='<div class="tg-note">Synced directly between the two of you — nothing is stored on a server.</div>';
+    live.innerHTML=html;setChip();
+  }
+  function broadcast(){if(P.conn&&P.conn.open){try{P.conn.send({t:"snap",snap:mySnap()});}catch(e){}}}
+  function onData(msg){if(!msg||msg.t!=="snap")return;P.partner=msg.snap;if(msg.snap&&msg.snap.name){state.partnerName=msg.snap.name;save();}renderTogether();}
+  function wireConn(conn){
+    P.conn=conn;
+    conn.on("open",function(){P.online=true;P.retry=0;broadcast();renderTogether();status("Connected 🌸");});
+    conn.on("data",onData);
+    conn.on("close",function(){P.online=false;renderTogether();});
+    conn.on("error",function(){P.online=false;renderTogether();});
+  }
+  function status(t){var s=$("pmStatus");if(s)s.textContent=t;}
+  function host(code){
+    if(!window.Peer){status("Realtime library didn't load — check your connection and reload.");return;}
+    try{P.peer=new Peer("fl-"+code);}catch(e){status("Could not start — try again.");return;}
+    P.peer.on("open",function(){status("Space ready. Share code "+code+" with your partner.");});
+    P.peer.on("connection",wireConn);
+    P.peer.on("error",function(err){
+      if(err&&err.type==="unavailable-id"){var c=genCode();state.pair={code:c,role:"host"};save();if($("pmCode"))$("pmCode").textContent=c.split("").join(" ");if($("pairModal"))$("pairModal").dataset.code=c;host(c);}
+      else status("Connection issue: "+((err&&err.type)||"unknown"));
+    });
+  }
+  function join(code){
+    if(!window.Peer){status("Realtime library didn't load — check your connection and reload.");return;}
+    try{P.peer=new Peer();}catch(e){status("Could not start — try again.");return;}
+    P.peer.on("open",function(){status("Looking for "+code+"…");wireConn(P.peer.connect("fl-"+code,{reliable:true}));});
+    P.peer.on("error",function(err){
+      P.online=false;
+      if(err&&err.type==="peer-unavailable"){status("Partner isn't online yet — I'll keep trying.");P.retry++;if(P.retry<60&&state.pair){setTimeout(function(){try{P.peer&&P.peer.destroy();}catch(e){}join(code);},5000);}}
+      else status("Connection issue: "+((err&&err.type)||"unknown"));
+      renderTogether();
+    });
+  }
+  function startPair(){
+    if(!state.pair||!state.pair.code)return;
+    try{P.peer&&P.peer.destroy();}catch(e){}
+    P.peer=null;P.conn=null;P.online=false;
+    if(state.pair.role==="host")host(state.pair.code);else join(state.pair.code);
+  }
+  var CODEC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  function genCode(){var s="";for(var i=0;i<6;i++)s+=CODEC.charAt(Math.floor(Math.random()*CODEC.length));return s;}
+
+  /* ---------- Pairing modal ---------- */
+  function openPair(){var m=$("pairModal");if(!m)return;$("pmName").value=state.name||"";var code=(state.pair&&state.pair.code)||genCode();$("pmCode").textContent=code.split("").join(" ");m.dataset.code=code;m.hidden=false;}
+  function closeModals(){if($("pairModal"))$("pairModal").hidden=true;if($("setModal"))$("setModal").hidden=true;}
+  if($("pairChip"))$("pairChip").addEventListener("click",openPair);
+  if($("tgPairBtn"))$("tgPairBtn").addEventListener("click",openPair);
+  document.querySelectorAll("[data-close]").forEach(function(b){b.addEventListener("click",closeModals);});
+  document.querySelectorAll(".modal-back").forEach(function(m){m.addEventListener("click",function(e){if(e.target===m)closeModals();});});
+  if($("pmCreate"))$("pmCreate").addEventListener("click",function(){
+    var name=($("pmName").value||"").trim();if(name)setName(name);
+    var code=($("pairModal").dataset.code)||genCode();
+    state.pair={code:code,role:"host"};save();
+    $("pmCopy").hidden=false;startPair();renderTogether();
+  });
+  if($("pmCopy"))$("pmCopy").addEventListener("click",function(){var c=(($("pairModal").dataset.code)||"").replace(/\s/g,"");if(navigator.clipboard)navigator.clipboard.writeText(c);status("Code copied — send it to your partner.");});
+  if($("pmJoinBtn"))$("pmJoinBtn").addEventListener("click",function(){
+    var code=($("pmJoin").value||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"");
+    if(code.length<4){status("Enter the code your partner shared.");return;}
+    var name=($("pmName").value||"").trim();if(name)setName(name);
+    state.pair={code:code,role:"guest"};save();startPair();renderTogether();status("Joining "+code+"…");
+  });
+
+  /* ---------- Settings modal ---------- */
+  function openSet(){$("setName").value=state.name||"";$("setKey").value=state.apiKey||"";$("setModel").value=state.model||"claude-opus-4-8";$("setModal").hidden=false;}
+  if($("settingsBtn"))$("settingsBtn").addEventListener("click",openSet);
+  if($("setSave"))$("setSave").addEventListener("click",function(){
+    setName(($("setName").value||"").trim()||state.name||"friend");
+    state.apiKey=($("setKey").value||"").trim();
+    state.model=($("setModel").value||"").trim()||"claude-opus-4-8";
+    save();updateAiPs();closeModals();broadcast();
+  });
+  if($("setClear"))$("setClear").addEventListener("click",function(){state.apiKey="";state.chat=[];save();renderChat();updateAiPs();});
+
+  /* ---------- AI companion ---------- */
+  function updateAiPs(){var el=$("aiPs");if(el)el.textContent=state.apiKey?"ready":"add a key in ⚙ Settings";}
+  function renderChat(){
+    var w=$("chatwrap");if(!w)return;var chat=state.chat||[];
+    if(!chat.length){w.innerHTML='<div class="chat-hint">Say hello, or tap a prompt below. Your companion already knows how your day is going 🌸</div>';return;}
+    w.innerHTML=chat.map(function(m){return '<div class="bubble '+(m.role==="user"?"me":"ai")+'">'+esc(m.text)+'</div>';}).join("");
+    w.scrollTop=w.scrollHeight;
+  }
+  function pushChat(role,text){state.chat=(state.chat||[]).concat([{role:role,text:text}]);if(state.chat.length>16)state.chat=state.chat.slice(-16);save();renderChat();}
+  function buildContext(){
+    var m=mySnap();
+    var s="Here's how I'm doing right now — living in: "+(m.region==="china"?"China":"Sweden")+"; rituals done today: "+m.done+"/"+m.total+"; longest current streak: "+m.streak+" days; forest plantings earned: "+m.rewards+"; today's intention: "+(m.intention||"(none set yet)")+".";
+    if(P.partner)s+=" I'm paired with "+(state.partnerName||"my partner")+", who has done "+P.partner.done+"/"+P.partner.total+" rituals today (streak "+P.partner.streak+"). We cheer each other on.";
+    return s;
+  }
+  var SYS="You are Fresh Life's companion — a warm, emotionally intelligent friend who blends gentle psychology with evidence-based health and habit coaching. Your person is a researcher-trader living between China and Sweden, working on sleep, movement, food, focus and skincare rituals. Be encouraging, specific and genuinely human: celebrate small wins by name, notice patterns kindly, and offer one or two concrete, doable next steps. Keep replies short and warm (a few sentences or a few short bullets) — never preachy, clinical, or generic. You are not a doctor or therapist; for medical concerns or emotional crises, gently and briefly suggest reaching out to a professional or a local helpline. If they're paired with a partner, weave in mutual encouragement.";
+  var busy=false;
+  function send(text){
+    if(busy)return;text=(text||"").trim();if(!text)return;
+    if(!state.apiKey){pushChat("assistant","I'd love to chat — add your Claude API key in ⚙ Settings first (it stays private in your browser).");openSet();return;}
+    var prior=(state.chat||[]).map(function(m){return {role:m.role,content:m.text};});
+    pushChat("user",text);
+    var w=$("chatwrap"),think=document.createElement("div");think.className="bubble ai think";think.textContent="…";w.appendChild(think);w.scrollTop=w.scrollHeight;
+    busy=true;
+    fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"content-type":"application/json","x-api-key":state.apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:state.model||"claude-opus-4-8",max_tokens:800,system:SYS,output_config:{effort:"low"},messages:prior.concat([{role:"user",content:buildContext()+"\n\n"+text}])})
+    }).then(function(r){return r.json();}).then(function(d){
+      busy=false;
+      if(d&&d.content){var t="";d.content.forEach(function(b){if(b.type==="text")t+=b.text;});pushChat("assistant",t||"(no reply)");}
+      else if(d&&d.error){pushChat("assistant","Hmm — "+((d.error.message)||"something went wrong")+(d.error.type==="authentication_error"?" (check your API key in ⚙ Settings).":""));}
+      else pushChat("assistant","Sorry, I couldn't reach the companion just now.");
+    }).catch(function(){busy=false;pushChat("assistant","Network hiccup — I couldn't reach the companion. Try again in a moment.");});
+  }
+  if($("chatSend"))$("chatSend").addEventListener("click",function(){var i=$("chatInput");send(i.value);i.value="";});
+  if($("chatInput"))$("chatInput").addEventListener("keydown",function(e){if(e.key==="Enter"){var i=$("chatInput");send(i.value);i.value="";}});
+  var QUICK={encourage:"Give me a little encouragement for today.",patterns:"Look at my rituals, streaks and intention and tell me — kindly — what patterns you notice and what might help.",today:"Help me plan a calm, focused day around my rituals."};
+  document.querySelectorAll("[data-ask]").forEach(function(b){b.addEventListener("click",function(){send(QUICK[b.getAttribute("data-ask")]);});});
+
+  /* ---------- Petals ---------- */
+  (function(){var p=$("petals");if(!p)return;var em=["🌸","🌷","🌼","💮"],h="";for(var i=0;i<12;i++){var l=Math.random()*100,d=8+Math.random()*10,dl=-Math.random()*d,sz=10+Math.random()*12;h+='<span class="petal" style="left:'+l+'%;font-size:'+sz+'px;animation-duration:'+d+'s;animation-delay:'+dl+'s">'+em[i%em.length]+'</span>';}p.innerHTML=h;})();
+
+  /* ---------- Boot ---------- */
+  updateAiPs();renderChat();renderTogether();
+  if(state.pair&&state.pair.code)startPair();
+  setInterval(function(){if(P.conn&&P.conn.open)broadcast();},3000);
 })();
 </script>
