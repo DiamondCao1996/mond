@@ -118,10 +118,24 @@
 
   /* ---------- AI companion ---------- */
   function updateAiPs(){var el=$("aiPs");if(el)el.textContent=state.apiKey?"ready":"add a key in ⚙ Settings";}
+  // markdown-lite → tidy HTML (bold headline + bullets), for a clean ADHD-friendly layout
+  function inlineMd(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");}
+  function fmt(raw){
+    var lines=String(raw).replace(/\r/g,"").split("\n"),html="",listType=null,buf=[];
+    function flush(){if(listType){html+="<"+listType+">"+buf.join("")+"</"+listType+">";buf=[];listType=null;}}
+    for(var i=0;i<lines.length;i++){
+      var t=lines[i].trim(),ul=t.match(/^[-*•]\s+(.*)$/),ol=t.match(/^\d+[.)]\s+(.*)$/);
+      if(ul){if(listType!=="ul")flush();listType="ul";buf.push("<li>"+inlineMd(ul[1])+"</li>");}
+      else if(ol){if(listType!=="ol")flush();listType="ol";buf.push("<li>"+inlineMd(ol[1])+"</li>");}
+      else if(t===""){flush();}
+      else{flush();html+="<p>"+inlineMd(t)+"</p>";}
+    }
+    flush();return html||esc(raw);
+  }
   function renderChat(){
     var w=$("chatwrap");if(!w)return;var chat=state.chat||[];
     if(!chat.length){w.innerHTML='<div class="chat-hint">Say hello, or tap a prompt below. Your companion already knows how your day is going 🌸</div>';return;}
-    w.innerHTML=chat.map(function(m){return '<div class="bubble '+(m.role==="user"?"me":"ai")+'">'+esc(m.text)+'</div>';}).join("");
+    w.innerHTML=chat.map(function(m){return '<div class="bubble '+(m.role==="user"?"me":"ai")+'">'+(m.role==="user"?esc(m.text):fmt(m.text))+'</div>';}).join("");
     w.scrollTop=w.scrollHeight;
   }
   function pushChat(role,text){state.chat=(state.chat||[]).concat([{role:role,text:text}]);if(state.chat.length>16)state.chat=state.chat.slice(-16);save();renderChat();}
@@ -131,7 +145,7 @@
     if(P.partner)s+=" I'm paired with "+(state.partnerName||"my partner")+", who has done "+P.partner.done+"/"+P.partner.total+" rituals today (streak "+P.partner.streak+"). We cheer each other on.";
     return s;
   }
-  var SYS="You are Fresh Life's companion — a warm, emotionally intelligent friend who blends gentle psychology with evidence-based health and habit coaching. Your person is a researcher-trader living between China and Sweden, working on sleep, movement, food, focus and skincare rituals. Be encouraging, specific and genuinely human: celebrate small wins by name, notice patterns kindly, and offer one or two concrete, doable next steps. Keep replies short and warm (a few sentences or a few short bullets) — never preachy, clinical, or generic. You are not a doctor or therapist; for medical concerns or emotional crises, gently and briefly suggest reaching out to a professional or a local helpline. If they're paired with a partner, weave in mutual encouragement.";
+  var SYS="You are Fresh Life's companion, talking with someone who has ADHD — so shape every reply for an ADHD brain. Rules: (1) Start with the single most important thing as one short **bold** headline. (2) Be concrete and specific — name the exact ritual, time, number, or streak from their day; never vague or generic. (3) Keep it short and simple: plain everyday words, short lines, no wall of text. (4) Give AT MOST 5 suggestions, and fewer is better — put each on its own line starting with \"- \", one short action per line. (5) Make the very first step tiny and obvious so it's easy to begin (e.g. \"do it for 2 minutes, right now\"). (6) Be warm and kind — celebrate small wins by name, no shame, no lectures, no long preamble. If they're paired with a partner, add one small way they can support each other. You are not a doctor or therapist; for medical concerns or emotional crises, gently and briefly suggest a professional or a local helpline. LAYOUT every reply as: one **bold** headline line, then (only if useful) up to 5 short \"- \" bullets. Keep the whole reply under ~110 words.";
   var busy=false;
   function send(text){
     if(busy)return;text=(text||"").trim();if(!text)return;

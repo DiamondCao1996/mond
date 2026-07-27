@@ -85,6 +85,9 @@
   .bubble.me{align-self:flex-end; background:var(--pine); color:#fff; border-bottom-right-radius:5px}
   .bubble.ai{align-self:flex-start; background:var(--surface-2); color:var(--ink); border-bottom-left-radius:5px}
   .bubble.ai.think{color:var(--ink-faint); font-style:italic}
+  .bubble p{margin:.4em 0} .bubble p:first-child{margin-top:0} .bubble p:last-child{margin-bottom:0}
+  .bubble ul,.bubble ol{margin:.4em 0; padding-left:1.2em} .bubble li{margin:.22em 0}
+  .bubble strong{font-weight:700} .bubble.ai strong{color:var(--pine-deep)}
   .chat-hint{color:var(--ink-faint); font-size:.88rem; text-align:center; padding:20px 10px; line-height:1.5}
   .quickrow{display:flex; gap:8px; flex-wrap:wrap; padding:6px 16px 0}
   .chip-btn.sm{padding:7px 12px; font-size:.8rem; box-shadow:none}
