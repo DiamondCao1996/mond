@@ -12,7 +12,7 @@
 
 ---
 
-![The Fresh Life dashboard in light mode](docs/screenshots/dashboard-light.png)
+![The Fresh Life dashboard in light mode, with the sakura halo glowing behind it](docs/screenshots/dashboard-light.png)
 
 ## Why this exists
 
@@ -32,7 +32,7 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 - **🌲 A reward forest** — every ritual or finished timer plants a tree in [`garden.html`](garden.html). Keep going and bunnies, squirrels, and the occasional fox move in. It only ever grows.
 - **💞 Two-person mode** — pair with someone you love and cheer each other on (see below).
 - **🌸 A gentle AI companion** — encouragement and a kind read on your patterns, powered by Claude (see below).
-- **🌸 A living sakura halo** — a glowing ring ([Vanta.js HALO](https://www.vantajs.com/?effect=halo) / WebGL) drifts behind the whole dashboard, tinted to the theme (a rose halo over plum at night, a soft rose glow by day), with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
+- **🌀 A living sakura halo** — a glowing ring ([Vanta.js HALO](https://www.vantajs.com/?effect=halo) / WebGL) drifts behind the whole dashboard, tinted to the theme (a rose halo over plum at night, a soft rose glow by day), with blossom petals floating over it. It bows out gracefully if you prefer reduced motion.
 
 ![The glowing sakura halo behind the UI](docs/screenshots/halo.png)
 
@@ -42,7 +42,7 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 <td width="50%"><img src="docs/screenshots/forest.png" alt="The reward forest"></td>
 </tr>
 <tr>
-<td align="center"><em>Twilight sakura night mode</em></td>
+<td align="center"><em>Twilight sakura night mode, halo aglow</em></td>
 <td align="center"><em>The reward forest — grown from your rituals</em></td>
 </tr>
 </table>
