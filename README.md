@@ -23,7 +23,7 @@ It's deliberately **kind, not naggy**: small repeatable rituals, gentle nudges, 
 ## ✨ What it does
 
 - **🕰️ Two live clocks** — China & Sweden, DST-safe. Tap one to switch your whole day's rhythm to that region's profile.
-- **🏠 Today's rhythm** — a region-aware timeline that highlights *now*, plus ten daily rituals with streaks and a progress bar.
+- **🏠 Today's rhythm** — a region-aware timeline that highlights *now*, plus daily rituals with streaks and a progress bar. **Add your own checklist items**, and each morning the checklist **resets automatically** (even with the tab left open) while your streaks and forest carry over.
 - **⏱️ Ritual timers** — yoga, tai chi, a forest run, facial care, a 50/10 focus block… each with steps and a gentle chime. 15 minutes is enough.
 - **📈 Markets, in your local times** — live open/closed status for US, HK and China A-shares, each session translated into both your wall-clocks so you know when to sit down and when to sleep instead.
 - **🧭 Interruption rebalance** — lost a night, ate late, worked a midnight US session? Pick what threw you off and get a calm, science-based way back.
@@ -63,6 +63,8 @@ You then sync **directly, device-to-device, over the internet** — a live *Toge
 ## 🌸 The AI companion
 
 A warm, emotionally-intelligent companion that blends gentle psychology with evidence-based habit and health coaching. It already knows how your day is going (region, rituals done, streaks, today's intention, and your partner's progress if paired) and offers encouragement, notices patterns kindly, and suggests one or two doable next steps.
+
+It can also **rebuild your whole day into a detailed, personalized routine** — tap **🗓️ Detail my day** and it rewrites the *My Tasks* timeline around your rituals, checklist, region and intention (reset to the default anytime).
 
 **Set it up:** open **⚙ Settings** → paste a [Claude API key](https://console.anthropic.com/) → chat.
 

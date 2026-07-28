@@ -90,12 +90,16 @@
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="panel-head"><span class="pt" data-i18n="panel_tasks">My Tasks</span><span class="ps" data-i18n="panel_today">Today</span></div>
+        <div class="panel-head"><span class="pt" data-i18n="panel_tasks">My Tasks</span><span class="ps" id="tasksPs">Today</span></div>
         <div class="timeline" id="timeline"></div>
       </div>
       <div class="card">
         <div class="panel-head"><span class="pt" data-i18n="panel_goals">My Goals</span><span class="ps tnum" id="habitCount">0 / 0</span></div>
         <div class="habits" id="habits"></div>
+        <div class="habit-add">
+          <input id="habitAddInput" type="text" data-i18n-ph="habit_add_ph" placeholder="Add your own task…" aria-label="Add your own task">
+          <button class="btn primary sm" id="habitAddBtn" aria-label="Add task">＋</button>
+        </div>
         <div class="habits-foot">
           <div class="progressbar"><i id="habitProg"></i></div>
           <span class="muted" style="font-size:.8rem" data-i18n="goals_foot">Daily rituals · tick as you go</span>
@@ -131,6 +135,7 @@
           <button class="chip-btn sm" data-ask="encourage" data-i18n="q_encourage">💗 Encourage me</button>
           <button class="chip-btn sm" data-ask="patterns" data-i18n="q_patterns">🔍 Read my patterns</button>
           <button class="chip-btn sm" data-ask="today" data-i18n="q_today">🌱 Plan my day</button>
+          <button class="chip-btn sm" id="buildRoutineBtn">🗓️ <span data-i18n="q_routine">Detail my day</span></button>
         </div>
         <div class="askbar chatbar">
           <input id="chatInput" type="text" data-i18n-ph="chat_ph" placeholder="Tell your companion anything…" aria-label="Message your companion">

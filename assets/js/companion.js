@@ -167,6 +167,60 @@
   var QMAP={encourage:"q_send_encourage",patterns:"q_send_patterns",today:"q_send_today"};
   document.querySelectorAll("[data-ask]").forEach(function(b){b.addEventListener("click",function(){send(TX(QMAP[b.getAttribute("data-ask")]));});});
 
+  /* ---------- AI: rebuild the whole day into a detailed routine ---------- */
+  function parseRoutine(txt){
+    if(!txt)return null;
+    var s=txt.indexOf("["),e=txt.lastIndexOf("]");
+    if(s<0||e<=s)return null;
+    var arr;try{arr=JSON.parse(txt.slice(s,e+1));}catch(err){return null;}
+    if(!arr||!arr.length)return null;
+    var out=[];
+    arr.forEach(function(x){
+      if(!x)return;
+      var time=String(x.time||x.t||"").trim();
+      var title=String(x.title||x.name||"").trim();
+      var note=String(x.note||x.desc||"").trim();
+      if(/^\d{1,2}:\d{2}$/.test(time)&&title){if(time.length===4)time="0"+time;out.push([time,title,note]);}
+    });
+    return out.length?out:null;
+  }
+  function buildRoutine(){
+    if(busy)return;
+    if(!state.apiKey){pushChat("assistant",TX("chat_needkey"));openSet();return;}
+    pushChat("user",TX("q_send_routine"));
+    var w=$("chatwrap"),think=document.createElement("div");think.className="bubble ai think";think.textContent="…";w.appendChild(think);w.scrollTop=w.scrollHeight;
+    busy=true;
+    var lang=window.FL_LANG||"en";
+    var langName={en:"English",zh:"Simplified Chinese (简体中文)",sv:"Swedish (svenska)"}[lang]||"English";
+    var region=state.region==="china"?"China (timezone Asia/Shanghai)":"Sweden (timezone Europe/Stockholm)";
+    var sched=(window.SCHEDULES&&SCHEDULES[state.region])||[];
+    var cur=sched.map(function(it){return it[0]+"  "+it[1]+" — "+it[2];}).join("\n");
+    var mine=(window.HABITS||[]).map(function(h){return h.name;}).concat((state.customHabits||[]).map(function(h){return h.name;})).join(", ");
+    var m=mySnap(),intent=m.intention||"(none set)";
+    var sys="You are a thoughtful daily-routine designer for a researcher-trader who lives between China and Sweden. Rebuild the person's day into a MORE DETAILED, realistic schedule. Keep their key anchors (wake + morning light, movement like tai chi / yoga / a forest run, protein-forward meals, deep-research focus blocks, the relevant market sessions, skincare, and a calm wind-down + sleep) and weave in their personal checklist items and today's intention. Use 12–16 time-blocks with sensible times for their region, each with a short, warm, practical note. Reply with ONLY a JSON array — no prose, no markdown, no code fences — written in "+langName+", shaped like: [{\"time\":\"HH:MM\",\"title\":\"short title\",\"note\":\"one short line\"}]. Use 24-hour HH:MM times sorted ascending.";
+    var user="Region: "+region+"\n\nCurrent routine:\n"+cur+"\n\nMy checklist items: "+(mine||"(none)")+"\nToday's intention: "+intent+"\n\nRebuild this into a more detailed, realistic day for me. JSON array only.";
+    fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"content-type":"application/json","x-api-key":state.apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:state.model||"claude-opus-4-8",max_tokens:2000,system:sys,output_config:{effort:"low"},messages:[{role:"user",content:user}]})
+    }).then(function(r){return r.json();}).then(function(d){
+      busy=false;
+      if(d&&d.error){pushChat("assistant",TX("err_prefix")+((d.error.message)||TX("err_something"))+(d.error.type==="authentication_error"?TX("err_auth"):""));return;}
+      var txt="";if(d&&d.content)d.content.forEach(function(b){if(b.type==="text")txt+=b.text;});
+      var arr=parseRoutine(txt);
+      if(arr&&arr.length>=4){
+        state.customSchedule=state.customSchedule||{};
+        state.customSchedule[state.region]={lang:lang,items:arr};
+        save();
+        if(window.renderTimeline)renderTimeline();
+        pushChat("assistant",TX("routine_applied"));
+      }else{
+        pushChat("assistant",txt||TX("routine_fail"));
+      }
+    }).catch(function(){busy=false;pushChat("assistant",TX("err_network"));});
+  }
+  if($("buildRoutineBtn"))$("buildRoutineBtn").addEventListener("click",buildRoutine);
+
   /* ---------- Petals ---------- */
   (function(){var p=$("petals");if(!p)return;var em=["🌸","🌷","🌼","💮"],h="";for(var i=0;i<12;i++){var l=Math.random()*100,d=8+Math.random()*10,dl=-Math.random()*d,sz=10+Math.random()*12;h+='<span class="petal" style="left:'+l+'%;font-size:'+sz+'px;animation-duration:'+d+'s;animation-delay:'+dl+'s">'+em[i%em.length]+'</span>';}p.innerHTML=h;})();
 

@@ -113,18 +113,34 @@ var SCHEDULES={
   ]
 };
 function nowMinRegion(){return tzMinutesNow(state.region==="china"?"Asia/Shanghai":"Europe/Stockholm",new Date());}
+// a custom AI-built routine for this region (matching the current language) overrides the default
+function currentSchedule(){
+  var cs=state.customSchedule&&state.customSchedule[state.region];
+  if(cs&&cs.lang===FL_LANG&&cs.items&&cs.items.length)return cs.items;
+  return SCHEDULES[state.region];
+}
 function renderTimeline(){
-  var list=SCHEDULES[state.region],nowM=nowMinRegion(),html="";
+  var list=currentSchedule(),nowM=nowMinRegion(),html="";
   // find current block: last item whose time <= now
   var curIdx=-1;
   list.forEach(function(it,i){var m=(+it[0].slice(0,2))*60+(+it[0].slice(3));if(m<=nowM)curIdx=i;});
   list.forEach(function(it,i){
     html+='<div class="tl-item'+(i===curIdx?' now':'')+'">'+
-      '<div class="tl-time tnum">'+it[0]+'</div>'+
-      '<div class="tl-body"><div class="tl-title">'+it[1]+'</div><div class="tl-note">'+it[2]+'</div></div></div>';
+      '<div class="tl-time tnum">'+esc(it[0])+'</div>'+
+      '<div class="tl-body"><div class="tl-title">'+esc(it[1])+'</div><div class="tl-note">'+esc(it[2])+'</div></div></div>';
   });
   document.getElementById("timeline").innerHTML=html;
+  var ps=document.getElementById("tasksPs");
+  if(ps){
+    var cs=state.customSchedule&&state.customSchedule[state.region];
+    if(cs&&cs.lang===FL_LANG&&cs.items&&cs.items.length)ps.innerHTML='<button class="revert-link" id="revertRoutine" type="button">'+TX("routine_revert")+'</button>';
+    else ps.textContent=TX("panel_today");
+  }
 }
+document.addEventListener("click",function(e){
+  var r=e.target.closest("#revertRoutine");
+  if(r){if(state.customSchedule)delete state.customSchedule[state.region];save();renderTimeline();}
+});
 
 /* ================= Data: habits ================= */
 var HABITS=[
@@ -139,20 +155,25 @@ var HABITS=[
   {id:"run",name:"Forest run / walk",nudges:["Nature + light + movement — the trifecta for a fresh, focused brain.","Just 15 minutes among trees measurably lowers stress hormones."]},
   {id:"facial",name:"Facial care",nudges:["Cleanse, moisturize, SPF — future skin is built on today's small ritual.","Consistency beats any expensive serum. Show up for your face."]}
 ];
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+// built-in rituals + the user's own custom checklist items
+function allHabits(){return HABITS.concat((state.customHabits||[]).map(function(h){return {id:h.id,name:h.name,nudges:[""],custom:true};}));}
 function todayStr(){
   var tz=state.region==="china"?"Asia/Shanghai":"Europe/Stockholm";
   var p=parts(tz,new Date());return p.year+"-"+p.month+"-"+p.day;
 }
 function dailyReset(){
   var t=todayStr();
-  if(state.lastReset!==t){
-    // break streaks for habits missed yesterday
-    if(state.lastReset){
-      HABITS.forEach(function(h){if(!state.habits[h.id])state.streaks[h.id]=0;});
-    }
-    state.habits={};state.lastReset=t;save();
+  if(state.lastReset===t)return false;
+  // break streaks for anything missed yesterday (streaks & the forest are kept)
+  if(state.lastReset){
+    allHabits().forEach(function(h){if(!state.habits[h.id])state.streaks[h.id]=0;});
   }
+  state.habits={};state.lastReset=t;save();
+  return true;
 }
+// runs periodically + on tab focus so the day rolls over even if the tab stays open
+function checkDay(){if(dailyReset()){renderHabits();renderTimeline();}}
 function dayIndex(){ // 0..6 rotate nudges/diet by day
   var tz=state.region==="china"?"Asia/Shanghai":"Europe/Stockholm";
   var wd=tzWeekday(tz,new Date());
@@ -160,21 +181,22 @@ function dayIndex(){ // 0..6 rotate nudges/diet by day
 }
 function renderHabits(){
   var di=dayIndex(),html="";
-  HABITS.forEach(function(h){
+  allHabits().forEach(function(h){
     var done=!!state.habits[h.id],st=state.streaks[h.id]||0;
-    var nudge=h.nudges[di%h.nudges.length];
-    html+='<div class="habit'+(done?' done':'')+'" data-id="'+h.id+'" role="checkbox" tabindex="0" aria-checked="'+done+'">'+
+    var nudge=h.custom?"":h.nudges[di%h.nudges.length];
+    html+='<div class="habit'+(done?' done':'')+(h.custom?' custom':'')+'" data-id="'+h.id+'" role="checkbox" tabindex="0" aria-checked="'+done+'">'+
       '<span class="box"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'+
-      '<span class="txt"><span class="name">'+h.name+'</span><br><span class="nudge">'+nudge+'</span></span>'+
+      '<span class="txt"><span class="name">'+esc(h.name)+'</span>'+(nudge?'<br><span class="nudge">'+nudge+'</span>':'')+'</span>'+
+      (h.custom?'<button class="habit-del" data-del="'+h.id+'" title="'+TX("habit_del")+'" aria-label="'+TX("habit_del")+'">✕</button>':'')+
       '<span class="streak'+(st>0?' on':'')+'" title="'+TX("streak_title")+'">◇'+st+'</span></div>';
   });
   document.getElementById("habits").innerHTML=html;
   updateHabitProgress();
 }
 function updateHabitProgress(){
-  var done=HABITS.filter(function(h){return state.habits[h.id];}).length;
-  document.getElementById("habitProg").style.width=(done/HABITS.length*100)+"%";
-  document.getElementById("habitCount").textContent=done+" / "+HABITS.length;
+  var list=allHabits(),done=list.filter(function(h){return state.habits[h.id];}).length;
+  document.getElementById("habitProg").style.width=(list.length?done/list.length*100:0)+"%";
+  document.getElementById("habitCount").textContent=done+" / "+list.length;
 }
 function toggleHabit(id){
   var was=!!state.habits[id];
@@ -183,12 +205,30 @@ function toggleHabit(id){
   else{state.streaks[id]=Math.max(0,(state.streaks[id]||0)-1);state.rewardsEarned=Math.max(0,(state.rewardsEarned||0)-1);}
   save();renderHabits();
 }
+function addHabit(name){
+  name=(name||"").trim();if(!name)return;
+  state.customHabits=(state.customHabits||[]);
+  state.customHabits.push({id:"c"+Date.now()+Math.floor(Math.random()*1000),name:name.slice(0,80)});
+  save();renderHabits();
+}
+function removeHabit(id){
+  state.customHabits=(state.customHabits||[]).filter(function(h){return h.id!==id;});
+  if(state.habits)delete state.habits[id];   // the forest keeps whatever it already grew
+  save();renderHabits();
+}
 document.getElementById("habits").addEventListener("click",function(e){
+  var del=e.target.closest(".habit-del");if(del){e.stopPropagation();removeHabit(del.getAttribute("data-del"));return;}
   var el=e.target.closest(".habit");if(el)toggleHabit(el.getAttribute("data-id"));
 });
 document.getElementById("habits").addEventListener("keydown",function(e){
   if(e.key===" "||e.key==="Enter"){var el=e.target.closest(".habit");if(el){e.preventDefault();toggleHabit(el.getAttribute("data-id"));}}
 });
+(function(){
+  var inp=document.getElementById("habitAddInput"),btn=document.getElementById("habitAddBtn");
+  function add(){if(inp){addHabit(inp.value);inp.value="";inp.focus();}}
+  if(btn)btn.addEventListener("click",add);
+  if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")add();});
+})();
 
 /* ================= Timers ================= */
 var TIMERS=[
@@ -544,4 +584,6 @@ timer.total=timer.remaining=timer.preset.min*60;
 dailyReset();
 reRenderAll();
 setInterval(tickClocks,1000);
-setInterval(function(){renderMarkets();renderTimeline();},30000);
+setInterval(function(){checkDay();renderMarkets();renderTimeline();},30000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)checkDay();});
+window.addEventListener("focus",checkDay);
