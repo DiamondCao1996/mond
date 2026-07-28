@@ -101,14 +101,16 @@ var SCHEDULES={
     ["07:20","Tai chi / mobility","Slow form by the window; wake the body kindly."],
     ["07:50","Warm breakfast","Rye, eggs or skyr, berries. Sit, sip, no screens."],
     ["08:30","Deep research block","Protected morning focus — one 50/10 block."],
+    ["09:00","A-share close","A-shares close ~09:00 your time (15:00 in China). Note the levels."],
+    ["10:00","HK close / journal","The HK bell is 16:00 in Hong Kong — about 10:00 for you. Log the trades, close the tab."],
     ["11:00","Friluftsliv: step outside","Even 15 min of nature light lifts mood + focus."],
     ["12:30","Lunch (lagom)","Balanced, not too much — the Nordic middle way."],
     ["14:00","Focused work / research","Second block; tea, water, posture check."],
-    ["15:30","HK close / A-share wrap","Review, journal the trades, close the tab."],
+    ["15:30","US open","The US bell is 15:30 your time (summer). Trade the plan, not the feeling."],
     ["17:00","Move: yoga or forest run","Into the trees before dusk — 15 min."],
     ["18:30","Cook a light dinner","Salmon, veg, wholegrain. Colorful plate."],
     ["20:00","Sauna / bath + skincare","Warm, unwind, facial care, wash dishes."],
-    ["22:00","US session watch","If trading — keep lights warm and low."],
+    ["22:00","US close / wind-down","The US closes ~22:00 your time. Close the loop, dim the lights."],
     ["23:00","Wind-down + sleep","Cool, dark room. Same time nightly."]
   ]
 };

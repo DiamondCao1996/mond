@@ -55,14 +55,16 @@ window.FL_DATA_MERGE("sv",{
       ["07:20","Tai chi / rörlighet","Långsam form vid fönstret; väck kroppen milt."],
       ["07:50","Varm frukost","Råg, ägg eller skyr, bär. Sitt, smutta, inga skärmar."],
       ["08:30","Djupt researchpass","Skyddat morgonfokus — ett 50/10-pass."],
+      ["09:00","A-aktier stänger","A-aktier stänger ~09:00 din tid (15:00 i Kina). Notera nivåerna."],
+      ["10:00","HK-stängning / journal","HK-klockan är 16:00 i Hongkong — cirka 10:00 för dig. Journalför traderna, stäng fliken."],
       ["11:00","Friluftsliv: gå ut","Även 15 min naturljus lyfter humör + fokus."],
       ["12:30","Lunch (lagom)","Balanserat, inte för mycket — den nordiska medelvägen."],
       ["14:00","Fokuserat arbete / research","Andra passet; te, vatten, kolla hållningen."],
-      ["15:30","HK-stängning / A-aktier avslut","Gå igenom, journalför traden, stäng fliken."],
+      ["15:30","USA öppnar","USA-klockan är 15:30 din tid (sommartid). Trada planen, inte känslan."],
       ["17:00","Rör dig: yoga eller skogslöpning","In bland träden före skymningen — 15 min."],
       ["18:30","Laga en lätt middag","Lax, grönt, fullkorn. Färgglad tallrik."],
       ["20:00","Bastu / bad + hudvård","Varmt, varva ner, ansiktsvård, diska."],
-      ["22:00","USA-session","Om du tradar — håll ljuset varmt och lågt."],
+      ["22:00","USA stänger / varva ner","USA stänger ~22:00 din tid. Slut cirkeln, dämpa ljuset."],
       ["23:00","Varva ner + sömn","Svalt, mörkt rum. Samma tid varje kväll."]
     ]
   },
